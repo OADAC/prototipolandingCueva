@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CUEVA Marketplace — Modelos · Placas · Módulos · Proyectos</title>
+<meta name="description" content="Marketplace CUEVA: explora modelos de vivienda, placas multienlace certificadas, módulos interiores plug&play y proyectos comunitarios.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0F1A2E;--ink:#1B2951;
+  --electric:#00C9A7;--coral:#FF4D35;--amber:#FFAA2C;--sky:#2B7AFF;--violet:#7C5CFC;
+  --bg:#F8F7F4;--bg2:#F0EDE6;--bg3:#E8E4DB;--white:#FFF;
+  --text:#1A1A1A;--text2:#555;--text3:#999;--text4:#CCC;--border:#DDD8CE;
+  --d:'Urbanist',sans-serif;--b:'Manrope',sans-serif;--m:'JetBrains Mono',monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --sh:0 4px 24px rgba(15,26,46,.06);--sh-lg:0 16px 48px rgba(15,26,46,.12);
+  --rad:12px;--rad-lg:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--b);line-height:1.5;color:var(--text);background:var(--bg);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body.loading{overflow:hidden}
+h1,h2,h3,h4{font-family:var(--d);font-weight:800;line-height:1.15}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;border:none;font-family:inherit}
+img{display:block;width:100%;height:100%;object-fit:cover}
+::selection{background:var(--navy);color:var(--electric)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+/* ─── LOADER ─── */
+.loader{position:fixed;inset:0;z-index:999999;background:var(--navy);display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity .8s,visibility .8s}
+.loader.done{opacity:0;visibility:hidden;pointer-events:none}
+.loader-geo{width:80px;height:80px;margin-bottom:1.5rem}
+.loader-geo svg{width:100%;height:100%;animation:lspin 4s linear infinite}
+@keyframes lspin{to{transform:rotate(360deg)}}
+.lg-o{fill:none;stroke:rgba(255,255,255,.1);stroke-width:2}
+.lg-e{fill:none;stroke:var(--electric);stroke-width:2;stroke-dasharray:200;stroke-dashoffset:200;animation:ldash 2s var(--ease) forwards}
+@keyframes ldash{to{stroke-dashoffset:0}}
+.loader-t{font-family:var(--d);font-size:1.2rem;font-weight:800;letter-spacing:8px;color:#fff;opacity:0;animation:lfu .8s .8s var(--ease) forwards}
+.loader-s{font-family:var(--m);font-size:.5rem;letter-spacing:3px;color:rgba(255,255,255,.25);margin-top:.4rem;opacity:0;animation:lfu .8s 1s var(--ease) forwards}
+@keyframes lfu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── GRAIN ─── */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:99998;opacity:.012;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ═══ NAV ═══ */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:.7rem 3rem;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(248,247,244,.88);border-bottom:1px solid var(--border);transition:all .4s}
+.nav-l{display:flex;align-items:center;gap:.6rem}
+.nav-geo{width:32px;height:32px}
+.nav-geo svg{width:100%;height:100%}
+.ng-o{fill:none;stroke:var(--navy);stroke-width:2;animation:morph 14s ease-in-out infinite}
+@keyframes morph{0%,100%{d:path('M16 1C24.5 1 31 7.5 31 16C31 24.5 24.5 31 16 31C7.5 31 1 24.5 1 16C1 7.5 7.5 1 16 1Z')}50%{d:path('M16 1C22 1 31 5 31 13C31 24 26 31 16 31C6 31 1 26 1 16C1 5 10 1 16 1Z')}}
+.ng-sq{fill:none;stroke:var(--electric);stroke-width:1;opacity:.5}
+.ng-tri{fill:none;stroke:var(--coral);stroke-width:1;opacity:.4}
+.ng-dot{fill:var(--electric);opacity:.6}
+.nav-brand{font-family:var(--d);font-weight:800;font-size:1.05rem;letter-spacing:3px;color:var(--navy)}
+.nav-brand span{display:block;font-family:var(--m);font-size:.45rem;font-weight:400;letter-spacing:2px;color:var(--electric)}
+.nav-r{display:flex;gap:1.6rem;align-items:center}
+.nav-r a{color:var(--text2);font-size:.82rem;font-weight:500;transition:color .3s}
+.nav-r a:hover{color:var(--electric)}
+.nav-cta{background:var(--navy)!important;color:#fff!important;padding:.42rem 1.1rem;border-radius:8px;font-family:var(--d);font-weight:700;transition:all .3s!important}
+.nav-cta:hover{background:var(--coral)!important}
+
+/* ═══ HERO ═══ */
+.hero{padding:7rem 3rem 2.5rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(0,201,167,.04),transparent);pointer-events:none}
+.hero h1{font-size:clamp(2rem,4.5vw,3.2rem);font-weight:900;letter-spacing:-1.5px;color:var(--navy);margin-bottom:.3rem}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--electric),var(--sky));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:var(--text2);max-width:520px;margin:0 auto 1.5rem;font-size:.9rem}
+
+/* Search */
+.search-bar{max-width:580px;margin:0 auto 1.5rem;display:flex;gap:.5rem}
+.search-bar input{flex:1;padding:.6rem 1.2rem;border-radius:100px;border:1px solid var(--border);background:var(--white);font-family:var(--b);font-size:.85rem;color:var(--text);outline:none;transition:border .3s}
+.search-bar input:focus{border-color:var(--electric)}
+.search-bar input::placeholder{color:var(--text4)}
+.search-bar button{padding:.6rem 1.4rem;border-radius:100px;background:var(--navy);color:#fff;font-family:var(--d);font-weight:700;font-size:.82rem;transition:all .3s}
+.search-bar button:hover{background:var(--electric);color:var(--navy)}
+
+/* Tabs */
+.tabs{display:flex;justify-content:center;gap:.4rem;margin-bottom:2rem;flex-wrap:wrap}
+.tab{padding:.5rem 1.3rem;border-radius:100px;font-family:var(--d);font-weight:700;font-size:.82rem;border:1px solid var(--border);background:var(--white);color:var(--text2);cursor:pointer;transition:all .3s var(--ease)}
+.tab:hover{border-color:var(--electric);color:var(--electric)}
+.tab.act{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* ═══ SECTIONS ═══ */
+.section{display:none;padding:0 3rem 3rem;max-width:1400px;margin:0 auto}
+.section.act{display:block}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.sec-hdr h2{font-size:1.4rem;letter-spacing:-.5px;color:var(--navy)}
+.sec-hdr .count{font-family:var(--m);font-size:.7rem;color:var(--text3);background:var(--bg2);padding:.2rem .6rem;border-radius:100px}
+.sub-tabs{display:flex;gap:.3rem;margin-bottom:1.5rem;overflow-x:auto;padding-bottom:.3rem}
+.sub-tab{padding:.35rem .8rem;border-radius:8px;font-family:var(--m);font-size:.65rem;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;white-space:nowrap;transition:all .25s}
+.sub-tab:hover,.sub-tab.act{background:rgba(0,201,167,.06);border-color:var(--electric);color:var(--electric)}
+
+/* ═══ CARD GRID ═══ */
+.grid{display:grid;gap:1.2rem}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+
+/* ═══ MODEL CARDS (big visual) ═══ */
+.m-card{background:var(--white);border:1px solid var(--border);border-radius:var(--rad-lg);overflow:hidden;transition:all .4s var(--ease);cursor:pointer;position:relative}
+.m-card:hover{transform:translateY(-6px);box-shadow:var(--sh-lg);border-color:var(--electric)}
+.m-card-img{height:220px;position:relative;overflow:hidden}
+.m-card-img img{transition:transform .6s var(--ease)}
+.m-card:hover .m-card-img img{transform:scale(1.06)}
+.m-card-badge{position:absolute;top:.8rem;left:.8rem;display:flex;gap:.3rem}
+.m-card-badge span{font-family:var(--m);font-size:.55rem;font-weight:700;padding:.2rem .5rem;border-radius:4px;backdrop-filter:blur(8px)}
+.badge-new{background:rgba(255,77,53,.85);color:#fff}
+.badge-eco{background:rgba(0,201,167,.85);color:#fff}
+.badge-hot{background:rgba(255,170,44,.85);color:var(--navy)}
+.badge-pro{background:rgba(124,92,252,.85);color:#fff}
+.m-card-price{position:absolute;bottom:.8rem;right:.8rem;font-family:var(--d);font-weight:900;font-size:1.1rem;color:#fff;background:rgba(15,26,46,.75);padding:.3rem .8rem;border-radius:8px;backdrop-filter:blur(8px)}
+.m-card-body{padding:1.1rem 1.2rem}
+.m-card-cat{font-family:var(--m);font-size:.55rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--electric);margin-bottom:.2rem}
+.m-card-title{font-family:var(--d);font-weight:800;font-size:1.05rem;color:var(--navy);letter-spacing:-.3px;margin-bottom:.3rem}
+.m-card-desc{font-size:.78rem;color:var(--text2);line-height:1.5;margin-bottom:.7rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.m-card-tags{display:flex;gap:.25rem;flex-wrap:wrap;margin-bottom:.6rem}
+.tag{font-family:var(--m);font-size:.55rem;font-weight:600;padding:2px 6px;border-radius:3px;background:rgba(0,201,167,.06);color:var(--electric)}
+.tag-mat{background:rgba(43,122,255,.06);color:var(--sky)}
+.tag-dim{background:rgba(255,170,44,.06);color:var(--amber)}
+.tag-cert{background:rgba(124,92,252,.06);color:var(--violet)}
+.m-card-foot{display:flex;align-items:center;justify-content:space-between;padding-top:.6rem;border-top:1px solid var(--border)}
+.m-card-specs{display:flex;gap:.8rem}
+.m-card-spec{font-family:var(--m);font-size:.6rem;color:var(--text3)}
+.m-card-spec strong{color:var(--navy);display:block;font-size:.72rem}
+.m-card-cta{font-family:var(--d);font-weight:700;font-size:.72rem;color:var(--electric);display:flex;align-items:center;gap:.3rem;transition:gap .3s}
+.m-card:hover .m-card-cta{gap:.5rem}
+
+/* ═══ PLACA CARDS (technical) ═══ */
+.p-card{background:var(--white);border:1px solid var(--border);border-radius:var(--rad-lg);overflow:hidden;transition:all .35s var(--ease);cursor:pointer}
+.p-card:hover{transform:translateY(-4px);box-shadow:var(--sh-lg);border-color:var(--electric)}
+.p-card-vis{height:160px;background:var(--navy);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.p-card-vis::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 29px,rgba(255,255,255,.03) 29px,rgba(255,255,255,.03) 30px),repeating-linear-gradient(0deg,transparent,transparent 29px,rgba(255,255,255,.03) 29px,rgba(255,255,255,.03) 30px)}
+.p-card-shape{border:2px solid var(--electric);border-radius:4px;opacity:.7;display:flex;align-items:center;justify-content:center;font-family:var(--m);font-size:.7rem;font-weight:700;color:var(--electric);transition:all .4s}
+.p-card:hover .p-card-shape{opacity:1;transform:scale(1.05)}
+.p-card-id{position:absolute;top:.6rem;left:.6rem;font-family:var(--m);font-size:.6rem;font-weight:700;color:rgba(255,255,255,.3)}
+.p-card-stock{position:absolute;top:.6rem;right:.6rem;font-family:var(--m);font-size:.55rem;font-weight:700;padding:.15rem .4rem;border-radius:4px}
+.stock-ok{background:rgba(0,201,167,.2);color:var(--electric)}
+.stock-low{background:rgba(255,170,44,.2);color:var(--amber)}
+.stock-out{background:rgba(255,77,53,.2);color:var(--coral)}
+.p-card-body{padding:1rem}
+.p-card-nm{font-family:var(--d);font-weight:800;font-size:.95rem;color:var(--navy);margin-bottom:.15rem}
+.p-card-mat{font-family:var(--m);font-size:.6rem;color:var(--text3);margin-bottom:.5rem}
+.p-card-specs{display:grid;grid-template-columns:1fr 1fr;gap:.3rem;margin-bottom:.6rem}
+.p-card-sp{background:var(--bg);border-radius:6px;padding:.35rem .5rem}
+.p-card-sp-lbl{font-family:var(--m);font-size:.5rem;color:var(--text3);letter-spacing:.5px}
+.p-card-sp-val{font-family:var(--d);font-weight:800;font-size:.82rem;color:var(--navy)}
+.p-card-price{font-family:var(--d);font-weight:900;font-size:1rem;color:var(--electric)}
+
+/* ═══ MODULE CARDS ═══ */
+.mod-card{background:var(--white);border:1px solid var(--border);border-radius:var(--rad-lg);overflow:hidden;transition:all .35s var(--ease);cursor:pointer}
+.mod-card:hover{transform:translateY(-4px);box-shadow:var(--sh-lg);border-color:var(--electric)}
+.mod-card-img{height:155px;overflow:hidden;position:relative}
+.mod-card-img img{transition:transform .5s var(--ease)}
+.mod-card:hover .mod-card-img img{transform:scale(1.06)}
+.mod-card-cat-badge{position:absolute;top:.6rem;left:.6rem;font-family:var(--m);font-size:.55rem;font-weight:700;padding:.2rem .5rem;border-radius:4px;background:rgba(15,26,46,.7);color:#fff;backdrop-filter:blur(6px)}
+.mod-card-body{padding:.9rem 1rem}
+.mod-card-nm{font-family:var(--d);font-weight:800;font-size:.9rem;color:var(--navy);margin-bottom:.1rem}
+.mod-card-fit{font-family:var(--m);font-size:.6rem;color:var(--electric);margin-bottom:.3rem}
+.mod-card-desc{font-size:.72rem;color:var(--text2);margin-bottom:.5rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mod-card-foot{display:flex;justify-content:space-between;align-items:center}
+.mod-card-price{font-family:var(--d);font-weight:900;font-size:.9rem;color:var(--navy)}
+.mod-card-plug{font-family:var(--m);font-size:.55rem;color:var(--electric);font-weight:600}
+
+/* ═══ PROJECT CARDS ═══ */
+.pj-card{background:var(--white);border:1px solid var(--border);border-radius:var(--rad-lg);overflow:hidden;transition:all .4s var(--ease);cursor:pointer}
+.pj-card:hover{transform:translateY(-5px);box-shadow:var(--sh-lg);border-color:var(--electric)}
+.pj-card-img{height:200px;overflow:hidden;position:relative}
+.pj-card-img img{transition:transform .6s var(--ease)}
+.pj-card:hover .pj-card-img img{transform:scale(1.05)}
+.pj-card-overlay{position:absolute;bottom:0;left:0;right:0;padding:.8rem 1rem;background:linear-gradient(transparent,rgba(15,26,46,.8))}
+.pj-card-st{font-family:var(--m);font-size:.55rem;font-weight:700;padding:.15rem .45rem;border-radius:4px;display:inline-block;margin-bottom:.3rem}
+.pj-st-active{background:var(--electric);color:var(--navy)}
+.pj-st-done{background:var(--sky);color:#fff}
+.pj-st-plan{background:var(--amber);color:var(--navy)}
+.pj-card-loc{font-size:.7rem;color:rgba(255,255,255,.7)}
+.pj-card-body{padding:1rem 1.1rem}
+.pj-card-nm{font-family:var(--d);font-weight:800;font-size:1rem;color:var(--navy);margin-bottom:.2rem}
+.pj-card-desc{font-size:.75rem;color:var(--text2);margin-bottom:.6rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pj-card-metrics{display:flex;gap:1rem}
+.pj-metric{text-align:center}
+.pj-metric-val{font-family:var(--d);font-weight:900;font-size:.9rem;color:var(--navy)}
+.pj-metric-lbl{font-family:var(--m);font-size:.5rem;color:var(--text3);letter-spacing:.5px}
+
+/* ═══ FEATURED BANNER ═══ */
+.banner{border-radius:var(--rad-lg);overflow:hidden;margin-bottom:2rem;position:relative;height:300px;cursor:pointer}
+.banner img{width:100%;height:100%;object-fit:cover}
+.banner-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(15,26,46,.85),rgba(15,26,46,.4));display:flex;align-items:center;padding:3rem}
+.banner-content{max-width:500px;color:#fff}
+.banner-content .tag{display:inline-block;margin-bottom:.6rem}
+.banner-content h2{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:900;letter-spacing:-1px;margin-bottom:.4rem}
+.banner-content p{font-size:.85rem;opacity:.7;margin-bottom:1rem}
+.banner-btn{padding:.55rem 1.3rem;border-radius:8px;background:var(--electric);color:var(--navy);font-family:var(--d);font-weight:700;font-size:.82rem;display:inline-flex;align-items:center;gap:.4rem;transition:all .3s}
+.banner-btn:hover{background:#fff;transform:translateX(4px)}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:1100px){.grid-4{grid-template-columns:repeat(3,1fr)}.grid-3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){.grid-4,.grid-3,.grid-2{grid-template-columns:1fr}.section{padding:0 1.2rem 2rem}nav{padding:.65rem 1.2rem}.nav-r{display:none}.hero{padding:5.5rem 1.2rem 1.5rem}.hero h1{font-size:2rem}.banner{height:220px}.banner-overlay{padding:1.5rem}.tabs{gap:.3rem}.tab{font-size:.75rem;padding:.4rem 1rem}}
+</style>
+</head>
+<body class="loading">
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+<div class="loader-geo"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="35" class="lg-o"/><circle cx="40" cy="40" r="35" class="lg-e"/></svg></div>
+<div class="loader-t">CUEVA</div>
+<div class="loader-s">Marketplace · Modelos · Placas · Módulos</div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-l">
+    <div class="nav-geo"><svg viewBox="0 0 32 32"><path d="M16 1C24.5 1 31 7.5 31 16C31 24.5 24.5 31 16 31C7.5 31 1 24.5 1 16C1 7.5 7.5 1 16 1Z" class="ng-o"/><rect x="9" y="9" width="7" height="7" rx="1" class="ng-sq"/><polygon points="19,8 25,19 13,19" class="ng-tri"/><circle cx="16" cy="16" r="1.5" class="ng-dot"/></svg></div>
+    <div class="nav-brand">CUEVA<span>MARKETPLACE</span></div>
+  </a>
+  <div class="nav-r">
+    <a href="index.html">Inicio</a>
+    <a href="community.html">Comunidad</a>
+    <a href="dashboard.html" class="nav-cta">Mi Dashboard →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Marketplace <em>CUEVA</em></h1>
+  <p>Explora modelos de vivienda, placas certificadas blockchain, módulos plug&play y proyectos comunitarios en la primera plataforma de construcción industrializada circular.</p>
+  <div class="search-bar">
+    <input type="text" placeholder="Buscar modelos, placas, módulos, proyectos..." id="searchInput">
+    <button>Buscar</button>
+  </div>
+  <div class="tabs">
+    <button class="tab act" data-sec="modelos">🏠 Modelos</button>
+    <button class="tab" data-sec="placas">🧱 Placas CUEVA</button>
+    <button class="tab" data-sec="modulos">🔌 Módulos</button>
+    <button class="tab" data-sec="proyectos">🚀 Proyectos</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SECTION: MODELOS                            -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section act" id="sec-modelos">
+
+  <!-- Featured Banner -->
+  <div class="banner">
+    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1400&q=80" alt="Modern house">
+    <div class="banner-overlay">
+      <div class="banner-content">
+        <span class="tag" style="background:var(--coral);color:#fff">🔥 PROYECTO SEMILLA</span>
+        <h2>Son Parc Menorca<br>16 Viviendas · 3000m²</h2>
+        <p>Primer despliegue real del sistema CUEVA con R2 Unitree, blockchain en producción y Proof of Installation. Sep 2025 — Abr 2026.</p>
+        <a class="banner-btn">Explorar proyecto →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec-hdr"><h2>Modelos de Vivienda</h2><span class="count">5 familias · 542+ configuraciones</span></div>
+
+  <div class="grid grid-3">
+    <!-- Basic Evolutivo -->
+    <div class="m-card">
+      <div class="m-card-img">
+        <img src="https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800&q=80" alt="Basic Evolutivo" loading="lazy">
+        <div class="m-card-badge"><span class="badge-hot">⭐ MÁS POPULAR</span></div>
+        <div class="m-card-price">Desde 12.600 €</div>
+      </div>
+      <div class="m-card-body">
+        <div class="m-card-cat">Familia Evolutiva</div>
+        <div class="m-card-title">Basic Evolutivo</div>
+        <div class="m-card-desc">4 familias evolutivas con 542+ configuraciones posibles. Desde 18m² ampliable hasta 250m². Estructura reutilizable 200+ ciclos. Patente ES 2 569 130 B1.</div>
+        <div class="m-card-tags"><span class="tag">18-250 m²</span><span class="tag tag-mat">Hormigón · CLT · Acero</span><span class="tag tag-cert">🔗 Blockchain</span></div>
+        <div class="m-card-foot">
+          <div class="m-card-specs"><div class="m-card-spec">Entrega<strong>&lt;3 meses</strong></div><div class="m-card-spec">Ciclos<strong>200+</strong></div></div>
+          <div class="m-card-cta">Configurar →</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OUTSIDE -->
+    <div class="m-card">
+      <div class="m-card-img">
+        <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80" alt="Modelo OUTSIDE" loading="lazy">
+        <div class="m-card-badge"><span class="badge-eco">🌿 BIOCLIMÁTICO</span></div>
+        <div class="m-card-price">Desde 79.000 €</div>
+      </div>
+      <div class="m-card-body">
+        <div class="m-card-cat">Independiente</div>
+        <div class="m-card-title">Modelo OUTSIDE</div>
+        <div class="m-card-desc">Tres filtros de privacidad y confort: espacios abiertos, cubiertos por cristal y techados. Conexión interior-exterior para clima mediterráneo.</div>
+        <div class="m-card-tags"><span class="tag">80-250 m²</span><span class="tag tag-mat">Multipanel</span><span class="tag tag-dim">3 filtros</span></div>
+        <div class="m-card-foot">
+          <div class="m-card-specs"><div class="m-card-spec">Entrega<strong>4-5 meses</strong></div><div class="m-card-spec">Tipo<strong>Independiente</strong></div></div>
+          <div class="m-card-cta">Configurar →</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INSIDE -->
+    <div class="m-card">
+      <div class="m-card-img">
+        <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80" alt="Modelo INSIDE" loading="lazy">
+        <div class="m-card-badge"><span class="badge-new">NUEVO</span></div>
+        <div class="m-card-price">Desde 149.000 €</div>
+      </div>
+      <div class="m-card-body">
+        <div class="m-card-cat">Adosada</div>
+        <div class="m-card-title">Modelo INSIDE</div>
+        <div class="m-card-desc">Patio interior bioclimático como corazón de la vivienda. Distribución innovadora con ventilación cruzada natural y máxima intimidad.</div>
+        <div class="m-card-tags"><span class="tag">150-450 m²</span><span class="tag tag-mat">CLT · Hormigón</span><span class="tag tag-dim">Patio central</span></div>
+        <div class="m-card-foot">
+          <div class="m-card-specs"><div class="m-card-spec">Entrega<strong>5-6 meses</strong></div><div class="m-card-spec">Tipo<strong>Adosada</strong></div></div>
+          <div class="m-card-cta">Configurar →</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HI -->
+    <div class="m-card">
+      <div class="m-card-img">
+        <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=800&q=80" alt="Modelo HI" loading="lazy">
+        <div class="m-card-badge"><span class="badge-pro">👑 PREMIUM</span></div>
+        <div class="m-card-price">Desde 299.000 €</div>
+      </div>
+      <div class="m-card-body">
+        <div class="m-card-cat">Alto Standing</div>
+        <div class="m-card-title">Modelo HI</div>
+        <div class="m-card-desc">Alto standing con oficinas independientes, zona invitados, 6-7 dormitorios y perspectivas visuales diseñadas. Acabados premium personalizables.</div>
+        <div class="m-card-tags"><span class="tag">300-900 m²</span><span class="tag tag-mat">Sistemas Híbridos</span><span class="tag tag-cert">🏆 Lujo</span></div>
+        <div class="m-card-foot">
+          <div class="m-card-specs"><div class="m-card-spec">Entrega<strong>6-8 meses</strong></div><div class="m-card-spec">Dorms<strong>6-7</strong></div></div>
+          <div class="m-card-cta">Configurar →</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LINE -->
+    <div class="m-card">
+      <div class="m-card-img">
+        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80" alt="Modelo LINE" loading="lazy">
+        <div class="m-card-badge"><span class="badge-eco">🏔️ TOPOGRAFÍA</span></div>
+        <div class="m-card-price">Desde 119.000 €</div>
+      </div>
+      <div class="m-card-body">
+        <div class="m-card-cat">Adaptable</div>
+        <div class="m-card-title">Modelo LINE</div>
+        <div class="m-card-desc">Adaptable a cualquier topografía. Concepto fluido de vivienda con distribución lineal optimizada. Ideal para terrenos en pendiente.</div>
+        <div class="m-card-tags"><span class="tag">100-300 m²</span><span class="tag tag-dim">Lineal</span><span class="tag tag-mat">Multi-material</span></div>
+        <div class="m-card-foot">
+          <div class="m-card-specs"><div class="m-card-spec">Entrega<strong>4-6 meses</strong></div><div class="m-card-spec">Tipo<strong>Fluido</strong></div></div>
+          <div class="m-card-cta">Configurar →</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Card -->
+    <div class="m-card" style="border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;min-height:400px;background:transparent">
+      <div style="text-align:center;color:var(--text3);padding:2rem">
+        <div style="font-size:2.5rem;margin-bottom:.6rem">🎨</div>
+        <div style="font-family:var(--d);font-weight:800;font-size:1.1rem;color:var(--navy);margin-bottom:.3rem">Diseño Personalizado</div>
+        <div style="font-size:.78rem;margin-bottom:.8rem">Usa el Smart Environment Builder para crear tu configuración única con IA generativa.</div>
+        <a class="banner-btn" style="display:inline-flex">Abrir Builder →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SECTION: PLACAS CUEVA                       -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section" id="sec-placas">
+  <div class="sec-hdr"><h2>Placas Multienlace CUEVA</h2><span class="count">10 estándar + 12 especiales · Patente ES 2 569 130 B1</span></div>
+
+  <div class="sub-tabs">
+    <button class="sub-tab act" data-filter="all">Todas</button>
+    <button class="sub-tab" data-filter="hormigon">Hormigón C30/37</button>
+    <button class="sub-tab" data-filter="clt">CLT C24-C30</button>
+    <button class="sub-tab" data-filter="acero">Acero S280</button>
+    <button class="sub-tab" data-filter="hibrido">Híbrido</button>
+  </div>
+
+  <!-- Featured Placa Banner -->
+  <div class="banner" style="height:200px;margin-bottom:1.5rem">
+    <img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1400&q=80" alt="Prefab construction">
+    <div class="banner-overlay" style="background:linear-gradient(135deg,rgba(15,26,46,.9),rgba(15,26,46,.5))">
+      <div class="banner-content">
+        <h2 style="font-size:1.4rem">Placa Multienlace · 3000×3000mm base</h2>
+        <p style="font-size:.78rem">TPE 300×300mm · ±2mm tolerancia · 150-300mm espesor · M20-M24 conectores · 200+ ciclos · RFID+IoT integrado · Proof of Installation</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-4" id="placasGrid">
+    <!-- PM-1515 -->
+    <div class="p-card" data-mat="hormigon clt acero hibrido">
+      <div class="p-card-vis"><div class="p-card-id">PM-1515</div><div class="p-card-stock stock-ok">EN STOCK</div><div class="p-card-shape" style="width:45px;height:45px">1.5×1.5</div></div>
+      <div class="p-card-body"><div class="p-card-nm">Placa PM-1515</div><div class="p-card-mat">Hormigón · CLT · Acero · Híbrido</div><div class="p-card-specs"><div class="p-card-sp"><div class="p-card-sp-lbl">ÁREA</div><div class="p-card-sp-val">2.25 m²</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">ESPESOR</div><div class="p-card-sp-val">150mm</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">PESO</div><div class="p-card-sp-val">~540 kg</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">CICLOS</div><div class="p-card-sp-val">200+</div></div></div><div class="p-card-price">Desde 416 €</div></div>
+    </div>
+    <!-- PM-3015 -->
+    <div class="p-card" data-mat="hormigon clt acero hibrido">
+      <div class="p-card-vis"><div class="p-card-id">PM-3015</div><div class="p-card-stock stock-ok">EN STOCK</div><div class="p-card-shape" style="width:80px;height:45px">3×1.5</div></div>
+      <div class="p-card-body"><div class="p-card-nm">Placa PM-3015</div><div class="p-card-mat">Hormigón · CLT · Acero · Híbrido</div><div class="p-card-specs"><div class="p-card-sp"><div class="p-card-sp-lbl">ÁREA</div><div class="p-card-sp-val">4.50 m²</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">ESPESOR</div><div class="p-card-sp-val">150mm</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">PESO</div><div class="p-card-sp-val">~1.080 kg</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">CICLOS</div><div class="p-card-sp-val">200+</div></div></div><div class="p-card-price">Desde 832 €</div></div>
+    </div>
+    <!-- PM-3030 -->
+    <div class="p-card" data-mat="hormigon clt">
+      <div class="p-card-vis"><div class="p-card-id">PM-3030</div><div class="p-card-stock stock-ok">EN STOCK</div><div class="p-card-shape" style="width:80px;height:80px">3×3</div></div>
+      <div class="p-card-body"><div class="p-card-nm">Placa PM-3030</div><div class="p-card-mat">Hormigón C30/37 · CLT C24</div><div class="p-card-specs"><div class="p-card-sp"><div class="p-card-sp-lbl">ÁREA</div><div class="p-card-sp-val">9.00 m²</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">ESPESOR</div><div class="p-card-sp-val">200mm</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">PESO</div><div class="p-card-sp-val">~2.160 kg</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">CICLOS</div><div class="p-card-sp-val">200+</div></div></div><div class="p-card-price">Desde 1.665 €</div></div>
+    </div>
+    <!-- PM-4515 -->
+    <div class="p-card" data-mat="hormigon clt">
+      <div class="p-card-vis"><div class="p-card-id">PM-4515</div><div class="p-card-stock stock-low">STOCK BAJO</div><div class="p-card-shape" style="width:100px;height:45px">4.5×1.5</div></div>
+      <div class="p-card-body"><div class="p-card-nm">Placa PM-4515</div><div class="p-card-mat">Hormigón · CLT</div><div class="p-card-specs"><div class="p-card-sp"><div class="p-card-sp-lbl">ÁREA</div><div class="p-card-sp-val">6.75 m²</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">ESPESOR</div><div class="p-card-sp-val">200mm</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">PESO</div><div class="p-card-sp-val">~1.620 kg</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">CICLOS</div><div class="p-card-sp-val">200+</div></div></div><div class="p-card-price">Desde 1.248 €</div></div>
+    </div>
+    <!-- PM-4530 -->
+    <div class="p-card" data-mat="hormigon clt">
+      <div class="p-card-vis"><div class="p-card-id">PM-4530</div><div class="p-card-stock stock-ok">EN STOCK</div><div class="p-card-shape" style="width:100px;height:80px">4.5×3</div></div>
+      <div class="p-card-body"><div class="p-card-nm">Placa PM-4530</div><div class="p-card-mat">Hormigón · CLT</div><div class="p-card-specs"><div class="p-card-sp"><div class="p-card-sp-lbl">ÁREA</div><div class="p-card-sp-val">13.50 m²</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">ESPESOR</div><div class="p-card-sp-val">250mm</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">PESO</div><div class="p-card-sp-val">~3.240 kg</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">CICLOS</div><div class="p-card-sp-val">200+</div></div></div><div class="p-card-price">Desde 2.497 €</div></div>
+    </div>
+    <!-- PM-6015 -->
+    <div class="p-card" data-mat="hormigon acero">
+      <div class="p-card-vis"><div class="p-card-id">PM-6015</div><div class="p-card-stock stock-low">STOCK BAJO</div><div class="p-card-shape" style="width:115px;height:45px">6×1.5</div></div>
+      <div class="p-card-body"><div class="p-card-nm">Placa PM-6015</div><div class="p-card-mat">Hormigón · Acero S280</div><div class="p-card-specs"><div class="p-card-sp"><div class="p-card-sp-lbl">ÁREA</div><div class="p-card-sp-val">9.00 m²</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">ESPESOR</div><div class="p-card-sp-val">250mm</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">PESO</div><div class="p-card-sp-val">~2.160 kg</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">CICLOS</div><div class="p-card-sp-val">200+</div></div></div><div class="p-card-price">Desde 1.665 €</div></div>
+    </div>
+    <!-- PM-6030 -->
+    <div class="p-card" data-mat="hormigon clt acero">
+      <div class="p-card-vis"><div class="p-card-id">PM-6030</div><div class="p-card-stock stock-ok">EN STOCK</div><div class="p-card-shape" style="width:115px;height:80px">6×3</div></div>
+      <div class="p-card-body"><div class="p-card-nm">Placa PM-6030</div><div class="p-card-mat">Hormigón · CLT · Acero</div><div class="p-card-specs"><div class="p-card-sp"><div class="p-card-sp-lbl">ÁREA</div><div class="p-card-sp-val">18.00 m²</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">ESPESOR</div><div class="p-card-sp-val">250mm</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">PESO</div><div class="p-card-sp-val">~4.320 kg</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">CICLOS</div><div class="p-card-sp-val">200+</div></div></div><div class="p-card-price">Desde 3.330 €</div></div>
+    </div>
+    <!-- PM-9030 -->
+    <div class="p-card" data-mat="hormigon acero">
+      <div class="p-card-vis"><div class="p-card-id">PM-9030</div><div class="p-card-stock stock-out">BAJO PEDIDO</div><div class="p-card-shape" style="width:130px;height:80px">9×3</div></div>
+      <div class="p-card-body"><div class="p-card-nm">Placa PM-9030</div><div class="p-card-mat">Hormigón · Acero S350</div><div class="p-card-specs"><div class="p-card-sp"><div class="p-card-sp-lbl">ÁREA</div><div class="p-card-sp-val">27.00 m²</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">ESPESOR</div><div class="p-card-sp-val">300mm</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">PESO</div><div class="p-card-sp-val">~6.480 kg</div></div><div class="p-card-sp"><div class="p-card-sp-lbl">CICLOS</div><div class="p-card-sp-val">200+</div></div></div><div class="p-card-price">Desde 4.200 €</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SECTION: MÓDULOS                            -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section" id="sec-modulos">
+  <div class="sec-hdr"><h2>Módulos Interiores Plug&Play</h2><span class="count">40+ módulos · MEP integrado · Blockchain</span></div>
+
+  <div class="sub-tabs" id="modTabs">
+    <button class="sub-tab act" data-mcat="all">Todos</button>
+    <button class="sub-tab" data-mcat="cocina">🍳 Cocinas</button>
+    <button class="sub-tab" data-mcat="bano">🚿 Baños</button>
+    <button class="sub-tab" data-mcat="estar">🛋️ Estar</button>
+    <button class="sub-tab" data-mcat="dorm">🛏️ Dormitorios</button>
+    <button class="sub-tab" data-mcat="fachada">🧱 Fachada</button>
+    <button class="sub-tab" data-mcat="tech">⚡ Técnicos</button>
+  </div>
+
+  <div class="grid grid-4" id="modulosGrid">
+    <!-- COCINAS -->
+    <div class="mod-card" data-mcat="cocina">
+      <div class="mod-card-img"><img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=600&q=80" alt="Cocina mínima" loading="lazy"><div class="mod-card-cat-badge">🍳 COCINA</div></div>
+      <div class="mod-card-body"><div class="mod-card-nm">Cocina Mínima</div><div class="mod-card-fit">PM-1515 · 1.5×1.5m · 2.25m²</div><div class="mod-card-desc">Placa 2 fuegos, fregadero, frigorífico bajo encimera. Plug&play con conexiones MEP.</div><div class="mod-card-foot"><div class="mod-card-price">2.400 €</div><div class="mod-card-plug">⚡ PLUG&PLAY</div></div></div>
+    </div>
+    <div class="mod-card" data-mcat="cocina">
+      <div class="mod-card-img"><img src="https://images.unsplash.com/photo-1556909172-54557c7e4fb7?w=600&q=80" alt="Cocina compacta" loading="lazy"><div class="mod-card-cat-badge">🍳 COCINA</div></div>
+      <div class="mod-card-body"><div class="mod-card-nm">Cocina Compacta</div><div class="mod-card-fit">PM-3015 · 3×1.5m · 4.5m²</div><div class="mod-card-desc">Completa lineal: placa 4 fuegos, horno, fregadero, frigorífico, lavavajillas integrado.</div><div class="mod-card-foot"><div class="mod-card-price">5.800 €</div><div class="mod-card-plug">⚡ PLUG&PLAY</div></div></div>
+    </div>
+    <div class="mod-card" data-mcat="cocina">
+      <div class="mod-card-img"><img src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?w=600&q=80" alt="Cocina estándar" loading="lazy"><div class="mod-card-cat-badge">🍳 COCINA</div></div>
+      <div class="mod-card-body"><div class="mod-card-nm">Cocina Estándar L</div><div class="mod-card-fit">PM-3030 · 3×3m · 9m²</div><div class="mod-card-desc">En L con isla. Todos los electrodomésticos, despensa y zona servicio. Domótica opcional.</div><div class="mod-card-foot"><div class="mod-card-price">12.500 €</div><div class="mod-card-plug">⚡ PLUG&PLAY</div></div></div>
+    </div>
+    <div class="mod-card" data-mcat="cocina">
+      <div class="mod-card-img"><img src="https://images.unsplash.com/photo-1588854337236-6889d631faa8?w=600&q=80" alt="Cocina premium" loading="lazy"><div class="mod-card-cat-badge">🍳 COCINA</div></div>
+      <div class="mod-card-body"><div class="mod-card-nm">Cocina Premium</div><div class="mod-card-fit">PM-4530 · 4.5×3m · 13.5m²</div><div class="mod-card-desc">Profesional: isla central, doble horno, zona lavado industrial, bodega integrada. Show cooking.</div><div class="mod-card-foot"><div class="mod-card-price">22.000 €</div><div class="mod-card-plug">⚡ PLUG&PLAY</div></div></div>
+    </div>
+    <!-- BAÑOS -->
+    <div class="mod-card" data-mcat="bano">
+      <div class="mod-card-img"><img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&q=80" alt="Baño ducha" loading="lazy"><div class="mod-card-cat-badge">🚿 BAÑO</div></div>
+      <div class="mod-card-body"><div class="mod-card-nm">Baño Ducha Completo</div><div class="mod-card-fit">PM-3015 · 3×1.5m · 4.5m²</div><div class="mod-card-desc">Ducha, inodoro, lavabo y almacenamiento. MEP prefabricado con conexiones rápidas.</div><div class="mod-card-foot"><div class="mod-card-price">4.200 €</div><div class="mod-card-plug">⚡ PLUG&PLAY</div></div></div>
+    </div>
+    <div class="mod-card" data-mcat="bano">
+      <div class="mod-card-img"><img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=600&q=80" alt="Baño suite" loading="lazy"><div class="mod-card-cat-badge">🚿 BAÑO</div></div>
+      <div class="mod-card-body"><div class="mod-card-nm">Baño Suite</div><div class="mod-card-fit">PM-3030 · 3×3m · 9m²</div><div class="mod-card-desc">En suite: ducha gran formato, doble lavabo, bidé y vestidor. Acabados premium.</div><div class="mod-card-foot"><div class="mod-card-price">8.900 €</div><div class="mod-card-plug">⚡ PLUG&PLAY</div></div></div>
+    </div>
+    <div class="mod-card" data-mcat="bano">
+      <div class="mod-card-img"><img src="https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=600&q=80" alt="Wellness room" loading="lazy"><div class="mod-card-cat-badge">🚿 BAÑO</div></div>
+      <div class="mod-card-body"><div class="mod-card-nm">Wellness Room</div><div class="mod-card-fit">PM-4530 · 4.5×3m · 13.5m²</div><div class="mod-card-desc">Sauna seca, ducha efecto lluvia, zona relax, climatización independiente. Experiencia spa.</div><div class="mod-card-foot"><div class="mod-card-price">18.500 €</div><div class="mod-card-plug">⚡ PLUG&PLAY</div></div></div>
+    </div>
+    <div class="mod-card" data-mcat="bano">
+      <div class="mod-card-img"><img src="https://images.unsplash.com/photo-1604709177225-055f99402ea3?w=600&q=80" alt="Baño adaptado" loading="lazy"><div class="mod-card-cat-badge">🚿 BAÑO</div></div>
+      <div class="mod-card-body"><div class="mod-card-nm">Baño Adaptado</div><div class="mod-card-fit">PM-3030 · 3×3m · 9m²</div><div class="mod-card-desc">Accesible: ducha a nivel, barras, espacio giro silla de ruedas. Normativa completa.</div><div class="mod-card-foot"><div class="mod-card-price">7.200 €</div><div class="mod-card-plug">♿ ACCESIBLE</div></div></div>
+    </div>
+    <!-- ESTAR -->
+    <div class="mod-card" data-mcat="estar">
+      <div class="mod-card-img"><img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&q=80" alt="Salón estándar" loading="lazy"><div class="mod-card-cat-badge">🛋️ ESTAR</div></div>
+      <div class="mod-card-body"><div class="mod-card-nm">Salón Estándar</div><div class="mod-card-fit">PM-4530 · 4.5×3m · 13.5m²</div><div class="mod-card-desc">Familiar: sofá esquinero, mesa centro, mueble TV, zona lectura. Iluminación integrada.</div><div class="mod-card-foot"><div class="mod-card-price">9.800 €</div><div class="mod-card-plug">⚡ PLUG&PLAY</div></div></div>
+    </div>
+    <div class="mod-card" data-mcat="estar">
+      <div class="mod-card-img"><img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=600&q=80" alt="Estudio office" loading="lazy"><div class="mod-card-cat-badge">🛋️ ESTAR</div></div>
+      <div class="mod-card-body"><div class="mod-card-nm">Estudio-Office</div><div class="mod-card-fit">PM-3030 · 3×3m · 9m²</div><div class="mod-card-desc">Despacho: escritorio, estantería, silla ergonómica, iluminación profesional y acústica.</div><div class="mod-card-foot"><div class="mod-card-price">6.500 €</div><div class="mod-card-plug">⚡ PLUG&PLAY</div></div></div>
+    </div>
+    <!-- DORMITORIOS -->
+    <div class="mod-card" data-mcat="dorm">
+      <div class="mod-card-img"><img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=600&q=80" alt="Dormitorio doble" loading="lazy"><div class="mod-card-cat-badge">🛏️ DORMITORIO</div></div>
+      <div class="mod-card-body"><div class="mod-card-nm">Dormitorio Doble</div><div class="mod-card-fit">PM-3030 · 3×3m · 9m²</div><div class="mod-card-desc">Cama 150cm, 2 mesillas, armario 2m, tocador. Iluminación ambiental y persianas motorizadas.</div><div class="mod-card-foot"><div class="mod-card-price">5.200 €</div><div class="mod-card-plug">⚡ PLUG&PLAY</div></div></div>
+    </div>
+    <div class="mod-card" data-mcat="dorm">
+      <div class="mod-card-img"><img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=600&q=80" alt="Suite premium" loading="lazy"><div class="mod-card-cat-badge">🛏️ DORMITORIO</div></div>
+      <div class="mod-card-body"><div class="mod-card-nm">Suite Premium</div><div class="mod-card-fit">PM-6030 · 6×3m · 18m²</div><div class="mod-card-desc">Master: cama 180cm, vestidor walk-in, zona lectura. Domótica completa y climatización.</div><div class="mod-card-foot"><div class="mod-card-price">14.800 €</div><div class="mod-card-plug">⚡ PLUG&PLAY</div></div></div>
+    </div>
+    <!-- FACHADA -->
+    <div class="mod-card" data-mcat="fachada">
+      <div class="mod-card-img"><img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=80" alt="Fachada ventilada" loading="lazy"><div class="mod-card-cat-badge">🧱 FACHADA</div></div>
+      <div class="mod-card-body"><div class="mod-card-nm">Fachada Ventilada</div><div class="mod-card-fit">Compatible todas las placas</div><div class="mod-card-desc">Sistema de fachada ventilada con aislamiento térmico, acabados cerámicos, madera o composite.</div><div class="mod-card-foot"><div class="mod-card-price">85 €/m²</div><div class="mod-card-plug">🔧 DESMONTABLE</div></div></div>
+    </div>
+    <div class="mod-card" data-mcat="fachada">
+      <div class="mod-card-img"><img src="https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=600&q=80" alt="Muro cortina" loading="lazy"><div class="mod-card-cat-badge">🧱 FACHADA</div></div>
+      <div class="mod-card-body"><div class="mod-card-nm">Muro Cortina Vidrio</div><div class="mod-card-fit">Compatible todas las placas</div><div class="mod-card-desc">Vidrio doble bajo emisivo. Control solar integrado. Perfilería aluminio reciclado.</div><div class="mod-card-foot"><div class="mod-card-price">145 €/m²</div><div class="mod-card-plug">🔧 DESMONTABLE</div></div></div>
+    </div>
+    <!-- TÉCNICOS -->
+    <div class="mod-card" data-mcat="tech">
+      <div class="mod-card-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=80" alt="Módulo técnico" loading="lazy"><div class="mod-card-cat-badge">⚡ TÉCNICO</div></div>
+      <div class="mod-card-body"><div class="mod-card-nm">Cuadro Eléctrico Smart</div><div class="mod-card-fit">PM-1515 · 1.5×1.5m</div><div class="mod-card-desc">Cuadro eléctrico con IoT, medición por circuitos, conectividad WiFi/BT y gestión remota.</div><div class="mod-card-foot"><div class="mod-card-price">3.200 €</div><div class="mod-card-plug">⚡ IoT INTEGRADO</div></div></div>
+    </div>
+    <div class="mod-card" data-mcat="tech">
+      <div class="mod-card-img"><img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80" alt="Climatización" loading="lazy"><div class="mod-card-cat-badge">⚡ TÉCNICO</div></div>
+      <div class="mod-card-body"><div class="mod-card-nm">Pack Climatización</div><div class="mod-card-fit">Aerotermia · Compatible toda la gama</div><div class="mod-card-desc">Bomba de calor aerotermia, suelo radiante, ACS y gestión inteligente. Clase A+++.</div><div class="mod-card-foot"><div class="mod-card-price">8.500 €</div><div class="mod-card-plug">⚡ A+++</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SECTION: PROYECTOS                          -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section" id="sec-proyectos">
+  <div class="sec-hdr"><h2>Proyectos en la Red CUEVA</h2><span class="count">Red activa · 47 neuronas · 18.4K m² en producción</span></div>
+
+  <div class="grid grid-3">
+    <!-- Son Parc -->
+    <div class="pj-card">
+      <div class="pj-card-img"><img src="https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?w=800&q=80" alt="Son Parc Menorca" loading="lazy"><div class="pj-card-overlay"><div class="pj-card-st pj-st-active">EN CURSO · SEMILLA</div><div class="pj-card-loc">📍 Son Parc, Menorca</div></div></div>
+      <div class="pj-card-body"><div class="pj-card-nm">Son Parc Menorca</div><div class="pj-card-desc">Primer despliegue real del sistema CUEVA. 16 viviendas con R2 Unitree, blockchain en producción y Proof of Installation. Pipeline €5.8M.</div><div class="pj-card-metrics"><div class="pj-metric"><div class="pj-metric-val">3000</div><div class="pj-metric-lbl">M² PLACAS</div></div><div class="pj-metric"><div class="pj-metric-val">16</div><div class="pj-metric-lbl">VIVIENDAS</div></div><div class="pj-metric"><div class="pj-metric-val">€5.8M</div><div class="pj-metric-lbl">PIPELINE</div></div></div></div>
+    </div>
+    <!-- Móstoles -->
+    <div class="pj-card">
+      <div class="pj-card-img"><img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=800&q=80" alt="Móstoles Madrid" loading="lazy"><div class="pj-card-overlay"><div class="pj-card-st pj-st-active">EN CURSO</div><div class="pj-card-loc">📍 Móstoles, Madrid</div></div></div>
+      <div class="pj-card-body"><div class="pj-card-nm">Residencial Móstoles</div><div class="pj-card-desc">Unifamiliar 130m² con hormigón prefabricado. 3 dormitorios, 84 placas. Entrega estimada marzo 2026.</div><div class="pj-card-metrics"><div class="pj-metric"><div class="pj-metric-val">130</div><div class="pj-metric-lbl">M²</div></div><div class="pj-metric"><div class="pj-metric-val">84</div><div class="pj-metric-lbl">PLACAS</div></div><div class="pj-metric"><div class="pj-metric-val">65%</div><div class="pj-metric-lbl">AVANCE</div></div></div></div>
+    </div>
+    <!-- Málaga -->
+    <div class="pj-card">
+      <div class="pj-card-img"><img src="https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=800&q=80" alt="Málaga Costa" loading="lazy"><div class="pj-card-overlay"><div class="pj-card-st pj-st-plan">COTIZACIÓN</div><div class="pj-card-loc">📍 Málaga, Andalucía</div></div></div>
+      <div class="pj-card-body"><div class="pj-card-nm">Málaga Costa</div><div class="pj-card-desc">4 viviendas adosadas modelo INSIDE. 560m² con CLT + hormigón. Pendiente aprobación stakeholders.</div><div class="pj-card-metrics"><div class="pj-metric"><div class="pj-metric-val">560</div><div class="pj-metric-lbl">M²</div></div><div class="pj-metric"><div class="pj-metric-val">312</div><div class="pj-metric-lbl">PLACAS</div></div><div class="pj-metric"><div class="pj-metric-val">4</div><div class="pj-metric-lbl">VIVIENDAS</div></div></div></div>
+    </div>
+    <!-- Barcelona -->
+    <div class="pj-card">
+      <div class="pj-card-img"><img src="https://images.unsplash.com/photo-1600607687644-c7171b42498f?w=800&q=80" alt="Barcelona Collective" loading="lazy"><div class="pj-card-overlay"><div class="pj-card-st pj-st-plan">REVISIÓN</div><div class="pj-card-loc">📍 Barcelona, Catalunya</div></div></div>
+      <div class="pj-card-body"><div class="pj-card-nm">Barcelona Collective</div><div class="pj-card-desc">Cooperativa 8 unidades con madera CLT. 640m² con módulos HI + Basic combinados. Revisión técnica.</div><div class="pj-card-metrics"><div class="pj-metric"><div class="pj-metric-val">640</div><div class="pj-metric-lbl">M²</div></div><div class="pj-metric"><div class="pj-metric-val">420</div><div class="pj-metric-lbl">PLACAS</div></div><div class="pj-metric"><div class="pj-metric-val">8</div><div class="pj-metric-lbl">UNIDADES</div></div></div></div>
+    </div>
+    <!-- OADAC Menorca -->
+    <div class="pj-card">
+      <div class="pj-card-img"><img src="https://images.unsplash.com/photo-1600573472592-401b489a3cdc?w=800&q=80" alt="OADAC Menorca" loading="lazy"><div class="pj-card-overlay"><div class="pj-card-st pj-st-done">✓ COMPLETADO</div><div class="pj-card-loc">📍 Menorca, Baleares</div></div></div>
+      <div class="pj-card-body"><div class="pj-card-nm">OADAC Menorca Pilot</div><div class="pj-card-desc">Piloto completado con certificación blockchain completa. 90m², 52 placas hormigón. Full lifecycle verificado.</div><div class="pj-card-metrics"><div class="pj-metric"><div class="pj-metric-val">90</div><div class="pj-metric-lbl">M²</div></div><div class="pj-metric"><div class="pj-metric-val">52</div><div class="pj-metric-lbl">PLACAS</div></div><div class="pj-metric"><div class="pj-metric-val">100%</div><div class="pj-metric-lbl">CERT</div></div></div></div>
+    </div>
+    <!-- Salamanca -->
+    <div class="pj-card">
+      <div class="pj-card-img"><img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80" alt="Salamanca" loading="lazy"><div class="pj-card-overlay"><div class="pj-card-st pj-st-active">EN CURSO</div><div class="pj-card-loc">📍 Salamanca, Castilla y León</div></div></div>
+      <div class="pj-card-body"><div class="pj-card-nm">Salamanca Universitario</div><div class="pj-card-desc">Residencia de estudiantes modelo OUTSIDE. 245m², 156 placas multipanel. En fase de producción.</div><div class="pj-card-metrics"><div class="pj-metric"><div class="pj-metric-val">245</div><div class="pj-metric-lbl">M²</div></div><div class="pj-metric"><div class="pj-metric-val">156</div><div class="pj-metric-lbl">PLACAS</div></div><div class="pj-metric"><div class="pj-metric-val">42%</div><div class="pj-metric-lbl">AVANCE</div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══ LOADER ═══
+window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('loader').classList.add('done');document.body.classList.remove('loading')},2200)});
+
+// ═══ MAIN TABS ═══
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('act'));
+    t.classList.add('act');
+    document.querySelectorAll('.section').forEach(s=>s.classList.remove('act'));
+    const sec=document.getElementById('sec-'+t.dataset.sec);
+    if(sec)sec.classList.add('act');
+    window.scrollTo({top:document.querySelector('.tabs').offsetTop-80,behavior:'smooth'});
+  });
+});
+
+// ═══ PLACA FILTER TABS ═══
+document.querySelectorAll('.sub-tab[data-filter]').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.sub-tab[data-filter]').forEach(x=>x.classList.remove('act'));
+    t.classList.add('act');
+    const f=t.dataset.filter;
+    document.querySelectorAll('#placasGrid .p-card').forEach(c=>{
+      if(f==='all'||c.dataset.mat.includes(f)){c.style.display=''}
+      else{c.style.display='none'}
+    });
+  });
+});
+
+// ═══ MODULE FILTER TABS ═══
+document.querySelectorAll('.sub-tab[data-mcat]').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.sub-tab[data-mcat]').forEach(x=>x.classList.remove('act'));
+    t.classList.add('act');
+    const f=t.dataset.mcat;
+    document.querySelectorAll('#modulosGrid .mod-card').forEach(c=>{
+      if(f==='all'||c.dataset.mcat===f){c.style.display=''}
+      else{c.style.display='none'}
+    });
+  });
+});
+
+// ═══ SEARCH ═══
+document.getElementById('searchInput').addEventListener('input',function(){
+  const q=this.value.toLowerCase();
+  if(!q){document.querySelectorAll('.m-card,.p-card,.mod-card,.pj-card').forEach(c=>c.style.display='');return}
+  // Show all sections for search
+  document.querySelectorAll('.section').forEach(s=>s.classList.add('act'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('act'));
+  document.querySelectorAll('.m-card,.p-card,.mod-card,.pj-card').forEach(c=>{
+    const txt=c.textContent.toLowerCase();
+    c.style.display=txt.includes(q)?'':'none';
+  });
+});
+
+// ═══ NAV SCROLL ═══
+window.addEventListener('scroll',()=>{
+  const n=document.querySelector('nav');
+  n.style.background=scrollY>50?'rgba(248,247,244,.95)':'rgba(248,247,244,.88)';
+  n.style.boxShadow=scrollY>50?'0 2px 16px rgba(15,26,46,.06)':'none';
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CUEVA Dashboard — Gemelo Digital & Auditor</title>
+<meta name="description" content="Panel profesional CUEVA · Gemelo digital, auditoría blockchain, gestión de activos y Proof of Installation en tiempo real.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ╔══════════════════════════════════════════════════════╗
+   ║  CUEVA · DASHBOARD v2.0                              ║
+   ║  Gemelo Digital & Auditor Blockchain                 ║
+   ╚══════════════════════════════════════════════════════╝ */
+:root{
+  --navy:#0F1A2E;--ink:#1B2951;--navy-deep:#0A1220;
+  --electric:#00C9A7;--coral:#FF4D35;--amber:#FFAA2C;--sky:#2B7AFF;--violet:#7C5CFC;
+  --bg:#F8F7F4;--bg2:#F0EDE6;--bg3:#E8E4DB;--white:#FFF;
+  --text:#1A1A1A;--text2:#555;--text3:#999;--text4:#CCC;--border:#DDD8CE;
+  --d:'Urbanist',sans-serif;--b:'Manrope',sans-serif;--m:'JetBrains Mono',monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --sh:0 4px 24px rgba(15,26,46,.06);--sh-lg:0 12px 40px rgba(15,26,46,.1);
+  --rad:12px;--rad-lg:16px;
+  --sidebar-w:260px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--b);line-height:1.5;color:var(--text);background:var(--bg);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body.loading{overflow:hidden}
+h1,h2,h3,h4,h5{font-family:var(--d);font-weight:800;line-height:1.2}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;border:none;font-family:inherit}
+::selection{background:var(--navy);color:var(--electric)}
+
+/* ─── LOADING ─── */
+.loader{position:fixed;inset:0;z-index:999999;background:var(--navy);display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity .8s ease,visibility .8s}
+.loader.done{opacity:0;visibility:hidden;pointer-events:none}
+.loader-geo{width:80px;height:80px;position:relative;margin-bottom:1.5rem}
+.loader-geo svg{width:100%;height:100%;animation:loaderSpin 4s linear infinite}
+@keyframes loaderSpin{to{transform:rotate(360deg)}}
+.loader-geo .lg-o{fill:none;stroke:rgba(255,255,255,.1);stroke-width:2}
+.loader-geo .lg-e{fill:none;stroke:var(--electric);stroke-width:2;stroke-dasharray:200;stroke-dashoffset:200;animation:ldash 2s var(--ease) forwards}
+@keyframes ldash{to{stroke-dashoffset:0}}
+.loader-t{font-family:var(--d);font-size:1.2rem;font-weight:800;letter-spacing:8px;color:#fff;text-transform:uppercase;opacity:0;animation:lfu .8s .8s var(--ease) forwards}
+.loader-s{font-family:var(--m);font-size:.5rem;letter-spacing:3px;color:rgba(255,255,255,.25);margin-top:.4rem;opacity:0;animation:lfu .8s 1s var(--ease) forwards}
+@keyframes lfu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── GRAIN ─── */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:99999;opacity:.012;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ═══ LAYOUT ═══ */
+.app{display:flex;min-height:100vh}
+
+/* ═══ SIDEBAR ═══ */
+.sidebar{width:var(--sidebar-w);background:var(--navy);color:#fff;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow-y:auto;transition:transform .4s var(--ease)}
+.sidebar::-webkit-scrollbar{width:4px}.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
+
+.sb-hdr{padding:1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:.7rem}
+.sb-logo{width:34px;height:34px;position:relative;flex-shrink:0}
+.sb-logo svg{width:100%;height:100%}
+.sb-logo .sbl-o{fill:none;stroke:#fff;stroke-width:2;animation:morph 14s ease-in-out infinite}
+@keyframes morph{0%,100%{d:path('M17 1C26 1 33 8 33 17C33 26 26 33 17 33C8 33 1 26 1 17C1 8 8 1 17 1Z')}50%{d:path('M17 1C24 1 33 6 33 14C33 26 28 33 17 33C6 33 1 28 1 17C1 6 10 1 17 1Z')}}
+.sb-logo .sbl-sq{fill:none;stroke:var(--electric);stroke-width:1;opacity:.5}
+.sb-logo .sbl-tri{fill:none;stroke:var(--coral);stroke-width:1;opacity:.4}
+.sb-logo .sbl-dot{fill:var(--electric);opacity:.6}
+.sb-brand{font-family:var(--d);font-weight:800;font-size:1.05rem;letter-spacing:4px}
+.sb-brand span{display:block;font-family:var(--m);font-size:.5rem;font-weight:400;letter-spacing:2px;color:var(--electric);margin-top:1px}
+
+/* Profile */
+.sb-profile{padding:1.25rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.sb-avatar{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--electric),var(--sky));display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:.6rem}
+.sb-name{font-family:var(--d);font-weight:700;font-size:.9rem}
+.sb-role{font-size:.72rem;color:rgba(255,255,255,.4);margin-top:.1rem}
+.sb-level{display:inline-flex;align-items:center;gap:.3rem;margin-top:.4rem;padding:.15rem .5rem;border-radius:100px;font-family:var(--m);font-size:.55rem;font-weight:600;background:rgba(0,201,167,.12);color:var(--electric);border:1px solid rgba(0,201,167,.2)}
+.sb-select{margin-top:.65rem;width:100%;padding:.4rem .7rem;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:#fff;font-size:.78rem;font-family:var(--b);appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2394A3B8'%3E%3Cpath d='M2 4l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right .5rem center}
+.sb-select option{background:var(--navy);color:#fff}
+
+/* Nav */
+.sb-nav{padding:.75rem 0;flex:1}
+.sb-sec{padding:0 1.5rem;margin-bottom:.15rem}
+.sb-sec-t{font-family:var(--m);font-size:.5rem;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,.2);margin-bottom:.4rem;padding-top:.6rem}
+.sb-item{display:flex;align-items:center;gap:.6rem;padding:.5rem .7rem;border-radius:8px;font-size:.82rem;font-weight:500;color:rgba(255,255,255,.5);transition:all .25s var(--ease);cursor:pointer;margin-bottom:1px}
+.sb-item:hover{background:rgba(255,255,255,.05);color:rgba(255,255,255,.8)}
+.sb-item.act{background:rgba(0,201,167,.1);color:var(--electric)}
+.sb-item .ico{font-size:.95rem;width:20px;text-align:center}
+.sb-badge{margin-left:auto;padding:.1rem .35rem;border-radius:100px;font-family:var(--m);font-size:.55rem;font-weight:700;background:var(--coral);color:#fff;min-width:16px;text-align:center}
+
+/* Sidebar Footer */
+.sb-ft{padding:.8rem 1.5rem;border-top:1px solid rgba(255,255,255,.06)}
+.sb-ft a{display:flex;align-items:center;gap:.4rem;font-size:.75rem;color:rgba(255,255,255,.3);transition:color .25s;padding:.25rem 0}
+.sb-ft a:hover{color:var(--electric)}
+
+/* ═══ MAIN ═══ */
+.main{margin-left:var(--sidebar-w);flex:1;min-height:100vh}
+
+/* Topbar */
+.topbar{background:var(--white);border-bottom:1px solid var(--border);padding:.65rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.tb-left{display:flex;align-items:center;gap:.8rem}
+.breadcrumb{display:flex;align-items:center;gap:.35rem;font-size:.78rem;color:var(--text3)}
+.breadcrumb a{color:var(--text2);transition:color .2s}
+.breadcrumb a:hover{color:var(--navy)}
+.breadcrumb .cur{color:var(--navy);font-weight:700}
+.tb-right{display:flex;align-items:center;gap:.7rem}
+.tb-btn{padding:.35rem .7rem;border-radius:8px;font-size:.78rem;font-weight:600;transition:all .25s var(--ease);display:flex;align-items:center;gap:.35rem;background:transparent;color:var(--text2)}
+.tb-btn:hover{background:var(--bg2);color:var(--navy)}
+.tb-btn.primary{background:var(--navy);color:#fff}
+.tb-btn.primary:hover{background:var(--coral)}
+.notif-dot{width:7px;height:7px;border-radius:50%;background:var(--coral);display:inline-block}
+
+/* Content */
+.content{padding:1.75rem 2rem}
+.c-hdr{margin-bottom:1.75rem}
+.c-hdr h1{font-size:1.6rem;color:var(--navy);letter-spacing:-.5px}
+.c-hdr p{font-size:.85rem;color:var(--text2);margin-top:.15rem}
+
+/* Panels */
+.panel{display:none}.panel.act{display:block}
+
+/* Stat cards */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.75rem}
+.stat{background:var(--white);border:1px solid var(--border);border-radius:var(--rad);padding:1.15rem;transition:all .3s var(--ease)}
+.stat:hover{border-color:var(--electric);box-shadow:var(--sh)}
+.stat-ico{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;margin-bottom:.6rem}
+.stat-lbl{font-family:var(--m);font-size:.55rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:.3rem}
+.stat-val{font-family:var(--d);font-size:1.7rem;font-weight:900;color:var(--navy);letter-spacing:-1px}
+.stat-chg{display:inline-flex;align-items:center;gap:.2rem;font-family:var(--m);font-size:.6rem;font-weight:600;margin-top:.2rem;padding:.1rem .35rem;border-radius:4px}
+.stat-chg.up{background:rgba(0,201,167,.08);color:var(--electric)}
+.stat-chg.dn{background:rgba(255,77,53,.08);color:var(--coral)}
+
+/* Cards */
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--rad-lg);padding:1.4rem;transition:all .3s var(--ease)}
+.card:hover{box-shadow:var(--sh)}
+.card-t{font-family:var(--d);font-size:.95rem;font-weight:800;color:var(--navy);margin-bottom:.9rem;display:flex;align-items:center;justify-content:space-between;letter-spacing:-.3px}
+.card-t .more{font-family:var(--m);font-size:.6rem;font-weight:600;color:var(--electric);cursor:pointer;letter-spacing:1px}
+.card-t .more:hover{text-decoration:underline}
+
+/* Grid */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1.15rem;margin-bottom:1.5rem}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.15rem;margin-bottom:1.5rem}
+
+/* Tool rows */
+.tool{display:flex;align-items:center;gap:.9rem;padding:.75rem;border-radius:var(--rad);border:1px solid var(--border);transition:all .25s var(--ease);margin-bottom:.4rem;cursor:pointer}
+.tool:hover{border-color:var(--electric);background:rgba(0,201,167,.02)}
+.tool-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.tool-info{flex:1}
+.tool-name{font-family:var(--d);font-weight:700;font-size:.88rem;color:var(--navy)}
+.tool-desc{font-size:.72rem;color:var(--text3);margin-top:.1rem}
+.tool-btn{padding:.3rem .65rem;border-radius:6px;font-family:var(--m);font-size:.6rem;font-weight:600;background:var(--bg);color:var(--text2);border:1px solid var(--border);transition:all .25s}
+.tool:hover .tool-btn{background:var(--electric);color:var(--navy);border-color:var(--electric)}
+
+/* Project cards */
+.proj{border:1px solid var(--border);border-radius:var(--rad);padding:.9rem;transition:all .3s var(--ease);cursor:pointer;background:var(--white)}
+.proj:hover{border-color:var(--electric);transform:translateY(-2px);box-shadow:var(--sh)}
+.proj-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem}
+.proj-nm{font-family:var(--d);font-weight:700;font-size:.9rem;color:var(--navy)}
+.proj-st{padding:.15rem .45rem;border-radius:4px;font-family:var(--m);font-size:.55rem;font-weight:700}
+.st-active{background:rgba(0,201,167,.08);color:var(--electric)}
+.st-pending{background:rgba(255,170,44,.08);color:var(--amber)}
+.st-review{background:rgba(124,92,252,.08);color:var(--violet)}
+.st-done{background:rgba(43,122,255,.08);color:var(--sky)}
+.proj-meta{display:flex;gap:.8rem;font-size:.72rem;color:var(--text3);margin-bottom:.6rem}
+.proj-meta span{display:flex;align-items:center;gap:.2rem}
+.proj-bar{height:4px;background:var(--bg2);border-radius:2px;overflow:hidden}
+.proj-fill{height:100%;border-radius:2px;transition:width .6s ease}
+
+/* Quotation flow */
+.q-flow{display:flex;gap:0;margin-bottom:1.75rem;overflow-x:auto;padding-bottom:.4rem}
+.q-step{flex:1;min-width:130px;text-align:center;position:relative;padding:.9rem .6rem}
+.q-step::after{content:'';position:absolute;top:26px;left:58%;right:-42%;height:2px;background:var(--border);z-index:0}
+.q-step:last-child::after{display:none}
+.q-step.done::after{background:var(--electric)}
+.q-dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--border);background:var(--white);margin:0 auto .4rem;position:relative;z-index:1;transition:all .3s}
+.q-step.done .q-dot{background:var(--electric);border-color:var(--electric)}
+.q-step.cur .q-dot{border-color:var(--electric);box-shadow:0 0 0 4px rgba(0,201,167,.15)}
+.q-lbl{font-family:var(--m);font-size:.6rem;font-weight:600;color:var(--text3);letter-spacing:.5px}
+.q-step.done .q-lbl{color:var(--electric)}.q-step.cur .q-lbl{color:var(--navy);font-weight:700}
+
+/* Factory queue */
+.qi{display:flex;align-items:center;gap:.9rem;padding:.65rem .9rem;border-radius:var(--rad);border:1px solid var(--border);background:var(--white);transition:all .25s;margin-bottom:.35rem}
+.qi:hover{border-color:var(--electric)}
+.qi-ord{font-family:var(--m);font-size:.65rem;font-weight:600;color:var(--text3);width:55px}
+.qi-info{flex:1}
+.qi-nm{font-weight:600;font-size:.82rem;color:var(--navy)}
+.qi-det{font-size:.68rem;color:var(--text3);margin-top:.05rem}
+.qi-st{font-family:var(--m);font-size:.6rem;font-weight:700;padding:.15rem .45rem;border-radius:4px}
+.qs-prod{background:rgba(0,201,167,.08);color:var(--electric)}
+.qs-test{background:rgba(43,122,255,.08);color:var(--sky)}
+.qs-ready{background:rgba(255,170,44,.08);color:var(--amber)}
+.qs-ship{background:rgba(124,92,252,.08);color:var(--violet)}
+
+/* Assembly timeline */
+.tl{position:relative;padding-left:1.8rem}
+.tl::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:2px;background:var(--border)}
+.tl-i{position:relative;padding-bottom:1.3rem}
+.tl-dot{position:absolute;left:-1.8rem;top:2px;width:16px;height:16px;border-radius:50%;border:2px solid var(--border);background:var(--white);z-index:1}
+.tl-i.done .tl-dot{background:var(--electric);border-color:var(--electric)}
+.tl-i.act .tl-dot{border-color:var(--electric);box-shadow:0 0 0 4px rgba(0,201,167,.12)}
+.tl-c{padding:.65rem .9rem;border-radius:var(--rad);border:1px solid var(--border);background:var(--white)}
+.tl-tt{font-family:var(--d);font-weight:700;font-size:.82rem;color:var(--navy)}
+.tl-desc{font-size:.72rem;color:var(--text3);margin-top:.15rem}
+.tl-time{font-family:var(--m);font-size:.6rem;color:var(--text4);margin-top:.3rem}
+
+/* Mini chart */
+.mchart{display:flex;align-items:flex-end;gap:3px;height:40px}
+.mbar{background:var(--electric);border-radius:2px 2px 0 0;min-width:6px;transition:all .3s;opacity:.5}
+.mbar:hover{opacity:1}
+
+/* Table */
+.dtbl{width:100%;border-collapse:collapse;font-size:.78rem}
+.dtbl th{text-align:left;padding:.5rem .65rem;font-family:var(--m);font-size:.55rem;text-transform:uppercase;letter-spacing:1px;color:var(--text3);border-bottom:2px solid var(--border);font-weight:700}
+.dtbl td{padding:.5rem .65rem;border-bottom:1px solid var(--bg2);color:var(--text2)}
+.dtbl tr:hover td{background:rgba(0,201,167,.015)}
+
+/* Blockchain certs */
+.cert{display:flex;align-items:center;gap:.9rem;padding:.85rem;border-radius:var(--rad);border:1px solid var(--border);background:linear-gradient(135deg,rgba(0,201,167,.02),rgba(43,122,255,.02));margin-bottom:.4rem;transition:all .25s}
+.cert:hover{border-color:var(--electric);box-shadow:var(--sh)}
+.cert-hash{font-family:var(--m);font-size:.6rem;color:var(--text3);word-break:break-all}
+.cert-ok{font-family:var(--m);font-size:.6rem;font-weight:700;color:var(--electric);display:flex;align-items:center;gap:.25rem;white-space:nowrap}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:1200px){.stats{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){.sidebar{transform:translateX(-100%);position:fixed}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.g2,.g3{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.content{padding:1.25rem 1rem}.topbar{padding:.65rem 1rem}}
+</style>
+</head>
+<body class="loading">
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+<div class="loader-geo">
+<svg viewBox="0 0 80 80">
+<circle cx="40" cy="40" r="35" class="lg-o"/>
+<circle cx="40" cy="40" r="35" class="lg-e"/>
+</svg>
+</div>
+<div class="loader-t">CUEVA</div>
+<div class="loader-s">Dashboard · Gemelo Digital & Auditor</div>
+</div>
+
+<div class="app">
+
+<!-- ═══════════ SIDEBAR ═══════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-hdr">
+    <div class="sb-logo">
+      <svg viewBox="0 0 34 34">
+        <path d="M17 1C26 1 33 8 33 17C33 26 26 33 17 33C8 33 1 26 1 17C1 8 8 1 17 1Z" class="sbl-o"/>
+        <rect x="10" y="10" width="7" height="7" rx="1" class="sbl-sq"/>
+        <polygon points="20,9 26,20 14,20" class="sbl-tri"/>
+        <circle cx="17" cy="17" r="1.5" class="sbl-dot"/>
+      </svg>
+    </div>
+    <div class="sb-brand">CUEVA<span>DASHBOARD v2.0</span></div>
+  </div>
+
+  <div class="sb-profile">
+    <div class="sb-avatar">👷</div>
+    <div class="sb-name">Carlos Martínez</div>
+    <div class="sb-role">Architect · OADAC Menorca</div>
+    <div class="sb-level">● Level 4 — Mentor</div>
+    <select class="sb-select" id="roleSelector">
+      <optgroup label="Building Technician">
+        <option value="architect" selected>🏛️ Architect</option>
+        <option value="engineer">⚙️ Engineer</option>
+        <option value="project-manager">📋 Project Manager</option>
+      </optgroup>
+      <optgroup label="Partners">
+        <option value="producer">🏭 Producer</option>
+        <option value="assembler">🔧 Assembler</option>
+        <option value="coordinator">👷 Assembly Coordinator</option>
+        <option value="carrier">🚛 Carrier</option>
+        <option value="supplier">📦 Supplier</option>
+      </optgroup>
+      <optgroup label="Stakeholders">
+        <option value="developer">🏢 Property Developer</option>
+        <option value="builder">🔨 Builder</option>
+        <option value="user">👤 User</option>
+        <option value="city">🌆 City</option>
+      </optgroup>
+    </select>
+  </div>
+
+  <nav class="sb-nav">
+    <div class="sb-sec">
+      <div class="sb-sec-t">Principal</div>
+      <div class="sb-item act" data-panel="overview"><span class="ico">📊</span>Overview<span class="sb-badge">3</span></div>
+      <div class="sb-item" data-panel="projects"><span class="ico">📐</span>Mis Proyectos</div>
+      <div class="sb-item" data-panel="quotation"><span class="ico">📝</span>Cotización<span class="sb-badge">1</span></div>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-sec-t">Herramientas</div>
+      <div class="sb-item" data-panel="tools"><span class="ico">🛠️</span>Mis Herramientas</div>
+      <div class="sb-item" data-panel="builder"><span class="ico">🎨</span>Smart Builder</div>
+      <div class="sb-item" data-panel="twin"><span class="ico">🔮</span>Digital Twin</div>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-sec-t">Producción</div>
+      <div class="sb-item" data-panel="factory"><span class="ico">🏭</span>Mi Fábrica</div>
+      <div class="sb-item" data-panel="assembly"><span class="ico">🔩</span>Montaje</div>
+      <div class="sb-item" data-panel="stock"><span class="ico">📦</span>Stock & Logística</div>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-sec-t">Blockchain</div>
+      <div class="sb-item" data-panel="certs"><span class="ico">🔗</span>Certificaciones</div>
+      <div class="sb-item" data-panel="exchanges"><span class="ico">📈</span>Exchanges</div>
+    </div>
+  </nav>
+
+  <div class="sb-ft">
+    <a href="index.html">← Volver al Index</a>
+    <a href="community.html">🌐 Comunidad</a>
+  </div>
+</aside>
+
+<!-- ═══════════ MAIN ═══════════ -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="tb-left">
+      <button class="tb-btn" id="menuToggle" style="display:none;font-size:1.2rem">☰</button>
+      <div class="breadcrumb">
+        <a href="index.html">CUEVA</a> <span>/</span> <span class="cur" id="bcTitle">Overview</span>
+      </div>
+    </div>
+    <div class="tb-right">
+      <button class="tb-btn">🔔 <span class="notif-dot"></span></button>
+      <button class="tb-btn">⚙️</button>
+      <button class="tb-btn primary" onclick="document.getElementById('roleSelector').focus()">Cambiar Rol →</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ═══════════ OVERVIEW ═══════════ -->
+    <div class="panel act" id="panel-overview">
+      <div class="c-hdr">
+        <h1>Buenos días, Carlos</h1>
+        <p>Vista general de tu actividad en el ecosistema CUEVA · Rol actual: <strong>Architect</strong></p>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-ico" style="background:rgba(0,201,167,.08);color:var(--electric)">📐</div>
+          <div class="stat-lbl">Proyectos Activos</div>
+          <div class="stat-val">7</div>
+          <div class="stat-chg up">→ +2 este mes</div>
+        </div>
+        <div class="stat">
+          <div class="stat-ico" style="background:rgba(43,122,255,.08);color:var(--sky)">📊</div>
+          <div class="stat-lbl">Placas en Proyecto</div>
+          <div class="stat-val">342</div>
+          <div class="stat-chg up">→ +48 nuevas</div>
+        </div>
+        <div class="stat">
+          <div class="stat-ico" style="background:rgba(255,170,44,.08);color:var(--amber)">⏱️</div>
+          <div class="stat-lbl">Tiempo Medio Entrega</div>
+          <div class="stat-val">2.4m</div>
+          <div class="stat-chg up">→ -12% vs Q3</div>
+        </div>
+        <div class="stat">
+          <div class="stat-ico" style="background:rgba(124,92,252,.08);color:var(--violet)">🔗</div>
+          <div class="stat-lbl">Certs Blockchain</div>
+          <div class="stat-val">156</div>
+          <div class="stat-chg up">→ 100% verificadas</div>
+        </div>
+      </div>
+
+      <div class="g2">
+        <div class="card">
+          <div class="card-t">Proyectos Recientes <span class="more">Ver todos →</span></div>
+          <div class="proj" style="margin-bottom:.4rem">
+            <div class="proj-hdr"><div class="proj-nm">Son Parc Menorca · 3000 m²</div><div class="proj-st st-active">EN CURSO</div></div>
+            <div class="proj-meta"><span>📍 Menorca</span><span>🏗️ 16 viviendas</span><span>📅 Abr 2026</span></div>
+            <div class="proj-bar"><div class="proj-fill" style="width:35%;background:var(--electric)"></div></div>
+          </div>
+          <div class="proj" style="margin-bottom:.4rem">
+            <div class="proj-hdr"><div class="proj-nm">Residencial Móstoles · 130 m²</div><div class="proj-st st-active">EN CURSO</div></div>
+            <div class="proj-meta"><span>📍 Madrid</span><span>🏗️ 84 placas</span><span>📅 Mar 2026</span></div>
+            <div class="proj-bar"><div class="proj-fill" style="width:65%;background:var(--electric)"></div></div>
+          </div>
+          <div class="proj">
+            <div class="proj-hdr"><div class="proj-nm">Barcelona Collective · 640 m²</div><div class="proj-st st-review">REVISIÓN</div></div>
+            <div class="proj-meta"><span>📍 Barcelona</span><span>🏗️ 420 placas</span><span>📅 Sep 2026</span></div>
+            <div class="proj-bar"><div class="proj-fill" style="width:12%;background:var(--violet)"></div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-t">Actividad de la Red <span class="more">Dashboard →</span></div>
+          <div style="margin-bottom:.9rem">
+            <div class="mchart" id="netChart"></div>
+            <div style="display:flex;justify-content:space-between;margin-top:.4rem;font-size:.55rem;color:var(--text4);font-family:var(--m)">
+              <span>Ene</span><span>Feb</span><span>Mar</span><span>Abr</span><span>May</span><span>Jun</span><span>Jul</span><span>Ago</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dic</span>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
+            <div style="padding:.5rem;background:var(--bg);border-radius:8px;border:1px solid var(--border)"><div style="font-family:var(--m);font-size:.5rem;letter-spacing:1px;color:var(--text3)">NEURONAS ACTIVAS</div><div style="font-family:var(--d);font-weight:900;font-size:1.2rem;color:var(--navy)">47</div></div>
+            <div style="padding:.5rem;background:var(--bg);border-radius:8px;border:1px solid var(--border)"><div style="font-family:var(--m);font-size:.5rem;letter-spacing:1px;color:var(--text3)">TPS RED</div><div style="font-family:var(--d);font-weight:900;font-size:1.2rem;color:var(--navy)">842</div></div>
+            <div style="padding:.5rem;background:var(--bg);border-radius:8px;border:1px solid var(--border)"><div style="font-family:var(--m);font-size:.5rem;letter-spacing:1px;color:var(--text3)">M² EN PRODUCCIÓN</div><div style="font-family:var(--d);font-weight:900;font-size:1.2rem;color:var(--navy)">18.4K</div></div>
+            <div style="padding:.5rem;background:var(--bg);border-radius:8px;border:1px solid var(--border)"><div style="font-family:var(--m);font-size:.5rem;letter-spacing:1px;color:var(--text3)">CO₂ AHORRADO</div><div style="font-family:var(--d);font-weight:900;font-size:1.2rem;color:var(--electric)">85%</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ PROJECTS ═══════════ -->
+    <div class="panel" id="panel-projects">
+      <div class="c-hdr"><h1>Mis Proyectos</h1><p>Gestión completa de todos tus proyectos CUEVA con Digital Twin integrado.</p></div>
+      <div class="g3">
+        <div class="proj"><div class="proj-hdr"><div class="proj-nm">Son Parc Menorca</div><div class="proj-st st-active">EN CURSO</div></div><div class="proj-meta"><span>📍 Menorca</span><span>3000 m²</span><span>16 viviendas</span></div><div style="font-size:.72rem;color:var(--text2);margin:.4rem 0">Placas CUEVA hormigón · R2 Unitree · Blockchain real</div><div class="proj-bar"><div class="proj-fill" style="width:35%;background:var(--electric)"></div></div><div style="margin-top:.35rem;font-family:var(--m);font-size:.6rem;color:var(--text3)">35% completado · Entrega: Abr 2026</div></div>
+        <div class="proj"><div class="proj-hdr"><div class="proj-nm">Residencial Móstoles</div><div class="proj-st st-active">EN CURSO</div></div><div class="proj-meta"><span>📍 Madrid</span><span>130 m²</span><span>84 placas</span></div><div style="font-size:.72rem;color:var(--text2);margin:.4rem 0">Hormigón prefabricado · 3 dormitorios</div><div class="proj-bar"><div class="proj-fill" style="width:65%;background:var(--electric)"></div></div><div style="margin-top:.35rem;font-family:var(--m);font-size:.6rem;color:var(--text3)">65% completado · Entrega: 15 Mar 2026</div></div>
+        <div class="proj"><div class="proj-hdr"><div class="proj-nm">Málaga Costa</div><div class="proj-st st-pending">COTIZACIÓN</div></div><div class="proj-meta"><span>📍 Málaga</span><span>560 m²</span><span>312 placas</span></div><div style="font-size:.72rem;color:var(--text2);margin:.4rem 0">4 viviendas adosadas · CLT</div><div class="proj-bar"><div class="proj-fill" style="width:25%;background:var(--amber)"></div></div><div style="margin-top:.35rem;font-family:var(--m);font-size:.6rem;color:var(--text3)">Fase cotización · Pendiente stakeholders</div></div>
+        <div class="proj"><div class="proj-hdr"><div class="proj-nm">Barcelona Collective</div><div class="proj-st st-review">REVISIÓN</div></div><div class="proj-meta"><span>📍 Barcelona</span><span>640 m²</span><span>420 placas</span></div><div style="font-size:.72rem;color:var(--text2);margin:.4rem 0">Cooperativa 8 unidades · Madera</div><div class="proj-bar"><div class="proj-fill" style="width:12%;background:var(--violet)"></div></div><div style="margin-top:.35rem;font-family:var(--m);font-size:.6rem;color:var(--text3)">Revisión técnica · Verificación modelo</div></div>
+        <div class="proj"><div class="proj-hdr"><div class="proj-nm">OADAC Menorca Pilot</div><div class="proj-st st-done">COMPLETADO</div></div><div class="proj-meta"><span>📍 Menorca</span><span>90 m²</span><span>52 placas</span></div><div style="font-size:.72rem;color:var(--text2);margin:.4rem 0">Piloto OADAC · Hormigón · Certificado</div><div class="proj-bar"><div class="proj-fill" style="width:100%;background:var(--sky)"></div></div><div style="margin-top:.35rem;font-family:var(--m);font-size:.6rem;color:var(--text3)">✓ Completado · Certificación blockchain emitida</div></div>
+        <div class="proj" style="border:2px dashed var(--border);display:flex;align-items:center;justify-content:center;min-height:170px;background:transparent" onclick="document.querySelector('[data-panel=builder]').click()"><div style="text-align:center;color:var(--text3)"><div style="font-size:1.8rem;margin-bottom:.4rem">+</div><div style="font-family:var(--d);font-weight:700;font-size:.85rem">Nuevo Proyecto</div><div style="font-size:.7rem;margin-top:.2rem">Smart Builder con IA</div></div></div>
+      </div>
+    </div>
+
+    <!-- ═══════════ QUOTATION ═══════════ -->
+    <div class="panel" id="panel-quotation">
+      <div class="c-hdr"><h1>Cotización — Málaga Costa</h1><p>4 viviendas adosadas · 560 m² · CLT + Hormigón · Flujo de aprobación multi-stakeholder.</p></div>
+      <div class="q-flow">
+        <div class="q-step done"><div class="q-dot"></div><div class="q-lbl">Diseño</div></div>
+        <div class="q-step done"><div class="q-dot"></div><div class="q-lbl">Break Down</div></div>
+        <div class="q-step done"><div class="q-dot"></div><div class="q-lbl">Presupuesto</div></div>
+        <div class="q-step cur"><div class="q-dot"></div><div class="q-lbl">Stakeholders</div></div>
+        <div class="q-step"><div class="q-dot"></div><div class="q-lbl">Fabricación</div></div>
+        <div class="q-step"><div class="q-dot"></div><div class="q-lbl">Envío</div></div>
+        <div class="q-step"><div class="q-dot"></div><div class="q-lbl">Montaje</div></div>
+      </div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-t">Detalle Cotización</div>
+          <table class="dtbl">
+            <thead><tr><th>Concepto</th><th>Cant.</th><th>€/ud</th><th>Total</th></tr></thead>
+            <tbody>
+              <tr><td>Placa 3×3m Hormigón</td><td>48</td><td>1.665</td><td style="font-weight:700">79.920 €</td></tr>
+              <tr><td>Placa 3×1.5m CLT</td><td>96</td><td>832</td><td style="font-weight:700">79.872 €</td></tr>
+              <tr><td>Placa 1.5×1.5m Hormigón</td><td>24</td><td>416</td><td style="font-weight:700">9.984 €</td></tr>
+              <tr><td>Conectores M24 Kit</td><td>312</td><td>45</td><td style="font-weight:700">14.040 €</td></tr>
+              <tr><td>Montaje & Logística</td><td>1</td><td>48.000</td><td style="font-weight:700">48.000 €</td></tr>
+              <tr style="border-top:2px solid var(--navy)"><td style="font-weight:800;color:var(--navy)">TOTAL</td><td></td><td></td><td style="font-family:var(--d);font-weight:900;font-size:1.1rem;color:var(--navy)">231.816 €</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <div class="card-t">Stakeholders Asignados</div>
+          <div style="display:flex;flex-direction:column;gap:.4rem">
+            <div style="display:flex;align-items:center;gap:.65rem;padding:.5rem;border-radius:8px;background:var(--bg);border:1px solid var(--border)">
+              <div style="width:34px;height:34px;border-radius:8px;background:rgba(0,201,167,.08);display:flex;align-items:center;justify-content:center">🏛️</div>
+              <div><div style="font-weight:600;font-size:.82rem">Carlos Martínez</div><div style="font-size:.68rem;color:var(--text3)">Architect · OADAC</div></div>
+              <div style="margin-left:auto;font-family:var(--m);font-size:.6rem;color:var(--electric);font-weight:700">✓ Asignado</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:.65rem;padding:.5rem;border-radius:8px;background:var(--bg);border:1px solid var(--border)">
+              <div style="width:34px;height:34px;border-radius:8px;background:rgba(43,122,255,.08);display:flex;align-items:center;justify-content:center">🏭</div>
+              <div><div style="font-weight:600;font-size:.82rem">Prefab. Ciutadella</div><div style="font-size:.68rem;color:var(--text3)">Producer · Menorca</div></div>
+              <div style="margin-left:auto;font-family:var(--m);font-size:.6rem;color:var(--electric);font-weight:700">✓ Confirmado</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:.65rem;padding:.5rem;border-radius:8px;background:var(--bg);border:1px solid var(--border)">
+              <div style="width:34px;height:34px;border-radius:8px;background:rgba(255,170,44,.08);display:flex;align-items:center;justify-content:center">🔧</div>
+              <div><div style="font-weight:600;font-size:.82rem">TASH & Partners</div><div style="font-size:.68rem;color:var(--text3)">Assembler · Nacional</div></div>
+              <div style="margin-left:auto;font-family:var(--m);font-size:.6rem;color:var(--amber);font-weight:700">⏳ Pendiente</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:.65rem;padding:.5rem;border-radius:8px;background:var(--bg);border:1px solid var(--border)">
+              <div style="width:34px;height:34px;border-radius:8px;background:rgba(124,92,252,.08);display:flex;align-items:center;justify-content:center">🚛</div>
+              <div><div style="font-weight:600;font-size:.82rem">Logistik Home</div><div style="font-size:.68rem;color:var(--text3)">Carrier · Transporte</div></div>
+              <div style="margin-left:auto;font-family:var(--m);font-size:.6rem;color:var(--amber);font-weight:700">⏳ Pendiente</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ TOOLS ═══════════ -->
+    <div class="panel" id="panel-tools">
+      <div class="c-hdr"><h1>Mis Herramientas</h1><p>Software y utilidades del ecosistema CUEVA disponibles para tu rol.</p></div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-t">Herramientas de Diseño</div>
+          <div class="tool"><div class="tool-ico" style="background:rgba(0,201,167,.08)">🏗️</div><div class="tool-info"><div class="tool-name">Break Down CUEVA BASIC</div><div class="tool-desc">Descomposición automática de proyectos en placas estándar CUEVA</div></div><div class="tool-btn">ABRIR</div></div>
+          <div class="tool"><div class="tool-ico" style="background:rgba(124,92,252,.08)">⚡</div><div class="tool-info"><div class="tool-name">Break Down CUEVA PRO</div><div class="tool-desc">Descomposición avanzada con optimización de materiales y costes</div></div><div class="tool-btn">ABRIR</div></div>
+          <div class="tool"><div class="tool-ico" style="background:rgba(43,122,255,.08)">🎨</div><div class="tool-info"><div class="tool-name">Smart Environment Builder PRO</div><div class="tool-desc">Diseño generativo cloud-based con módulos predefinidos</div></div><div class="tool-btn">ABRIR</div></div>
+        </div>
+        <div class="card">
+          <div class="card-t">Visualización y Verificación</div>
+          <div class="tool"><div class="tool-ico" style="background:rgba(255,170,44,.08)">🔮</div><div class="tool-info"><div class="tool-name">Visualizador Site Work Digital Twin</div><div class="tool-desc">Gemelo digital del sitio de obra con tracking en tiempo real</div></div><div class="tool-btn">ABRIR</div></div>
+          <div class="tool"><div class="tool-ico" style="background:rgba(255,77,53,.08)">📊</div><div class="tool-info"><div class="tool-name">Carbon, Cost & Time Calculator</div><div class="tool-desc">Cálculo de impacto medioambiental, presupuesto y cronograma</div></div><div class="tool-btn">ABRIR</div></div>
+          <div class="tool"><div class="tool-ico" style="background:rgba(0,201,167,.08)">🔗</div><div class="tool-info"><div class="tool-name">Blockchain Certification Viewer</div><div class="tool-desc">Visualiza y verifica certificaciones Proof of Installation</div></div><div class="tool-btn">ABRIR</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ SMART BUILDER ═══════════ -->
+    <div class="panel" id="panel-builder">
+      <div class="c-hdr"><h1>Smart Environment Builder</h1><p>Diseña tu proyecto seleccionando módulos o deja que la IA proponga la configuración óptima.</p></div>
+      <div class="card" style="min-height:380px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(15,26,46,.02),rgba(0,201,167,.03))">
+        <div style="text-align:center;color:var(--text3)">
+          <div style="font-size:2.5rem;margin-bottom:.8rem">🎨</div>
+          <div style="font-family:var(--d);font-weight:800;font-size:1.15rem;color:var(--navy);margin-bottom:.4rem">Cloud-Based 3D Builder</div>
+          <div style="font-size:.82rem;max-width:380px;margin:0 auto .6rem">Selecciona placas CUEVA, combina módulos interiores y genera planos automáticamente con verificación blockchain.</div>
+          <button style="padding:.55rem 1.4rem;border-radius:100px;background:var(--electric);color:var(--navy);font-family:var(--d);font-weight:700;border:none;cursor:pointer;font-size:.85rem;transition:all .3s">Iniciar Nuevo Diseño →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ DIGITAL TWIN ═══════════ -->
+    <div class="panel" id="panel-twin">
+      <div class="c-hdr"><h1>Digital Twin — Site Work</h1><p>Gemelo digital del sitio de obra con monitorización IoT en tiempo real.</p></div>
+      <div class="card" style="min-height:340px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(43,122,255,.04),rgba(124,92,252,.04))">
+        <div style="text-align:center;color:var(--text3)">
+          <div style="font-size:2.5rem;margin-bottom:.8rem">🔮</div>
+          <div style="font-family:var(--d);font-weight:800;font-size:1.15rem;color:var(--navy);margin-bottom:.4rem">Visualizador 3D — Son Parc</div>
+          <div style="font-size:.82rem;max-width:380px;margin:0 auto .6rem">Sensores IoT: 24 activos · Placas instaladas: 120/890 · R2 Unitree: Online · Temperatura: 16°C</div>
+          <button style="padding:.55rem 1.4rem;border-radius:100px;background:var(--sky);color:#fff;font-family:var(--d);font-weight:700;border:none;cursor:pointer;font-size:.85rem;transition:all .3s">Abrir Digital Twin →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ FACTORY ═══════════ -->
+    <div class="panel" id="panel-factory">
+      <div class="c-hdr"><h1>Mi Fábrica</h1><p>Cola de producción, testing, stock y envío — Prefabricados Ciutadella, Menorca.</p></div>
+      <div class="stats">
+        <div class="stat"><div class="stat-lbl">En Producción</div><div class="stat-val" style="color:var(--electric)">24</div><div class="stat-chg up">placas activas</div></div>
+        <div class="stat"><div class="stat-lbl">En Testing</div><div class="stat-val" style="color:var(--sky)">8</div><div class="stat-chg up">verificación QA</div></div>
+        <div class="stat"><div class="stat-lbl">Stock Listo</div><div class="stat-val" style="color:var(--amber)">42</div><div class="stat-chg up">para envío</div></div>
+        <div class="stat"><div class="stat-lbl">Enviadas</div><div class="stat-val" style="color:var(--violet)">186</div><div class="stat-chg up">este trimestre</div></div>
+      </div>
+      <div class="card">
+        <div class="card-t">Cola de Producción <span class="more">Exportar →</span></div>
+        <div class="qi"><div class="qi-ord">#2026-047</div><div class="qi-info"><div class="qi-nm">Placa 3×3m Hormigón × 12</div><div class="qi-det">Málaga Costa · 9 m² c/u</div></div><div class="qi-st qs-prod">PRODUCCIÓN</div></div>
+        <div class="qi"><div class="qi-ord">#2026-048</div><div class="qi-info"><div class="qi-nm">Placa 3×3m CLT × 8</div><div class="qi-det">Barcelona Collective · 9 m² c/u</div></div><div class="qi-st qs-prod">PRODUCCIÓN</div></div>
+        <div class="qi"><div class="qi-ord">#2026-045</div><div class="qi-info"><div class="qi-nm">Placa 6×3m Hormigón × 6</div><div class="qi-det">Son Parc · 18 m² c/u</div></div><div class="qi-st qs-test">TESTING</div></div>
+        <div class="qi"><div class="qi-ord">#2026-043</div><div class="qi-info"><div class="qi-nm">Placa 3×1.5m Madera × 16</div><div class="qi-det">Móstoles · 4.5 m² c/u</div></div><div class="qi-st qs-ready">LISTO</div></div>
+        <div class="qi"><div class="qi-ord">#2026-040</div><div class="qi-info"><div class="qi-nm">Placa 9×3m Hormigón × 4</div><div class="qi-det">OADAC Menorca · 27 m² c/u</div></div><div class="qi-st qs-ship">ENVIADO</div></div>
+      </div>
+    </div>
+
+    <!-- ═══════════ ASSEMBLY ═══════════ -->
+    <div class="panel" id="panel-assembly">
+      <div class="c-hdr"><h1>Montaje — Son Parc Menorca</h1><p>Secuencia de montaje, recepción de placas y verificación R2 Unitree en obra.</p></div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-t">Secuencia de Montaje</div>
+          <div class="tl">
+            <div class="tl-i done"><div class="tl-dot"></div><div class="tl-c"><div class="tl-tt">1. Cimentación y preparación</div><div class="tl-desc">Forjados sanitarios CUEVA · Placas anclaje acero galvanizado</div><div class="tl-time">Completado · 12 Feb 2026</div></div></div>
+            <div class="tl-i done"><div class="tl-dot"></div><div class="tl-c"><div class="tl-tt">2. Estructura planta baja</div><div class="tl-desc">24 placas 3×3m + 3×1.5m · Pernos M24 inox · Junta seca</div><div class="tl-time">Completado · 18 Feb 2026</div></div></div>
+            <div class="tl-i act"><div class="tl-dot"></div><div class="tl-c"><div class="tl-tt">3. Forjado intermedio</div><div class="tl-desc">Canto forjado 12cm · 18 placas · Solapamiento TPE</div><div class="tl-time">En curso · Est. 22 Feb 2026</div></div></div>
+            <div class="tl-i"><div class="tl-dot"></div><div class="tl-c"><div class="tl-tt">4. Estructura planta primera</div><div class="tl-desc">20 placas + Fachada exterior ventilada</div><div class="tl-time">Programado · 25 Feb 2026</div></div></div>
+            <div class="tl-i"><div class="tl-dot"></div><div class="tl-c"><div class="tl-tt">5. Cubierta y sellado</div><div class="tl-desc">Impermeabilización · Aislamiento térmico</div><div class="tl-time">Programado · 1 Mar 2026</div></div></div>
+            <div class="tl-i"><div class="tl-dot"></div><div class="tl-c"><div class="tl-tt">6. Módulos interiores</div><div class="tl-desc">Cocina, baños · Instalaciones MEP · Particiones desmontables</div><div class="tl-time">Programado · 8 Mar 2026</div></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-t">Recepción de Placas</div>
+          <table class="dtbl">
+            <thead><tr><th>Placa</th><th>Cant.</th><th>Estado</th><th>PoI</th></tr></thead>
+            <tbody>
+              <tr><td>3×1.5m Madera</td><td>16</td><td><span style="color:var(--electric);font-weight:700">Recibido</span></td><td style="color:var(--electric)">✓ PoI OK</td></tr>
+              <tr><td>3×3m Hormigón</td><td>12</td><td><span style="color:var(--electric);font-weight:700">Recibido</span></td><td style="color:var(--electric)">✓ PoI OK</td></tr>
+              <tr><td>6×3m Hormigón</td><td>8</td><td><span style="color:var(--electric);font-weight:700">Recibido</span></td><td style="color:var(--electric)">✓ PoI OK</td></tr>
+              <tr><td>3×3m CLT</td><td>8</td><td><span style="color:var(--amber);font-weight:700">En tránsito</span></td><td style="color:var(--text4)">— Pendiente</td></tr>
+              <tr><td>9×3m Hormigón</td><td>6</td><td><span style="color:var(--amber);font-weight:700">En tránsito</span></td><td style="color:var(--text4)">— Pendiente</td></tr>
+              <tr><td>Módulos cocina</td><td>1</td><td><span style="color:var(--text3)">En producción</span></td><td style="color:var(--text4)">— Pendiente</td></tr>
+              <tr><td>Módulos baño</td><td>2</td><td><span style="color:var(--text3)">En producción</span></td><td style="color:var(--text4)">— Pendiente</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ STOCK ═══════════ -->
+    <div class="panel" id="panel-stock">
+      <div class="c-hdr"><h1>Stock & Logística</h1><p>Inventario de placas disponibles y seguimiento de envíos.</p></div>
+      <div class="card">
+        <div class="card-t">Inventario Global <span class="more">Marketplace →</span></div>
+        <table class="dtbl">
+          <thead><tr><th>Placa</th><th>Material</th><th>Dimensiones</th><th>m²</th><th>Stock</th><th>Reservadas</th><th>Disponibles</th></tr></thead>
+          <tbody>
+            <tr><td>PM-1515</td><td>Hormigón</td><td>1.5×1.5 m</td><td>2.25</td><td>45</td><td>12</td><td style="color:var(--electric);font-weight:700">33</td></tr>
+            <tr><td>PM-3015</td><td>Hormigón</td><td>3×1.5 m</td><td>4.50</td><td>68</td><td>32</td><td style="color:var(--electric);font-weight:700">36</td></tr>
+            <tr><td>PM-3015</td><td>Madera</td><td>3×1.5 m</td><td>4.50</td><td>24</td><td>16</td><td style="color:var(--amber);font-weight:700">8</td></tr>
+            <tr><td>PM-3030</td><td>Hormigón</td><td>3×3 m</td><td>9.00</td><td>52</td><td>20</td><td style="color:var(--electric);font-weight:700">32</td></tr>
+            <tr><td>PM-3030</td><td>CLT</td><td>3×3 m</td><td>9.00</td><td>18</td><td>8</td><td style="color:var(--electric);font-weight:700">10</td></tr>
+            <tr><td>PM-6030</td><td>Hormigón</td><td>6×3 m</td><td>18.00</td><td>14</td><td>6</td><td style="color:var(--amber);font-weight:700">8</td></tr>
+            <tr><td>PM-9030</td><td>Hormigón</td><td>9×3 m</td><td>27.00</td><td>6</td><td>4</td><td style="color:var(--coral);font-weight:700">2</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══════════ CERTIFICATIONS ═══════════ -->
+    <div class="panel" id="panel-certs">
+      <div class="c-hdr"><h1>Certificaciones Blockchain</h1><p>Trazabilidad completa de placas y proyectos verificados en la red CUEVA.</p></div>
+      <div class="card">
+        <div class="card-t">Certificaciones Recientes <span class="more">Ver todas →</span></div>
+        <div class="cert">
+          <div style="width:38px;height:38px;border-radius:10px;background:rgba(0,201,167,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0">🔗</div>
+          <div style="flex:1"><div style="font-family:var(--d);font-weight:700;font-size:.82rem;color:var(--navy)">Son Parc Fase 1 — Forjados Sanitarios</div><div class="cert-hash">0x7a3f...e82d · Block #1,247,893 · CUEVA Network · PoI #48201-48224</div></div>
+          <div class="cert-ok">✓ VERIFICADO</div>
+        </div>
+        <div class="cert">
+          <div style="width:38px;height:38px;border-radius:10px;background:rgba(43,122,255,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0">📦</div>
+          <div style="flex:1"><div style="font-family:var(--d);font-weight:700;font-size:.82rem;color:var(--navy)">Lote PM-6030 #2026-045 — 6 placas Hormigón</div><div class="cert-hash">0x4b2c...f91a · Block #1,248,012 · DPP Compliant</div></div>
+          <div class="cert-ok">✓ VERIFICADO</div>
+        </div>
+        <div class="cert">
+          <div style="width:38px;height:38px;border-radius:10px;background:rgba(255,170,44,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0">🏗️</div>
+          <div style="flex:1"><div style="font-family:var(--d);font-weight:700;font-size:.82rem;color:var(--navy)">Móstoles Fase 2 — Estructura Planta Baja</div><div class="cert-hash">0x9e1d...a47b · Block #1,248,156 · IoT Sensors Linked · R2 Verified</div></div>
+          <div class="cert-ok">✓ VERIFICADO</div>
+        </div>
+        <div class="cert">
+          <div style="width:38px;height:38px;border-radius:10px;background:rgba(124,92,252,.06);display:flex;align-items:center;justify-content:center;flex-shrink:0">📐</div>
+          <div style="flex:1"><div style="font-family:var(--d);font-weight:700;font-size:.82rem;color:var(--navy)">OADAC Menorca Pilot — Certificación Completa</div><div class="cert-hash">0x3f8a...c26e · Block #1,248,201 · Full Lifecycle · 52 placas · DPP Issued</div></div>
+          <div class="cert-ok">✓ VERIFICADO</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ EXCHANGES ═══════════ -->
+    <div class="panel" id="panel-exchanges">
+      <div class="c-hdr"><h1>Exchanges & Stock</h1><p>Mercado secundario de componentes CUEVA certificados.</p></div>
+      <div class="stats">
+        <div class="stat"><div class="stat-lbl">Placas en Mercado</div><div class="stat-val">1,247</div></div>
+        <div class="stat"><div class="stat-lbl">Transacciones Hoy</div><div class="stat-val">38</div></div>
+        <div class="stat"><div class="stat-lbl">Volumen (€)</div><div class="stat-val">142K</div></div>
+        <div class="stat"><div class="stat-lbl">Precio Medio PM-3030</div><div class="stat-val">1.8K</div></div>
+      </div>
+      <div class="card">
+        <div class="card-t">Ofertas Activas en el Mercado <span class="more">Ver marketplace →</span></div>
+        <table class="dtbl">
+          <thead><tr><th>Placa</th><th>Material</th><th>Ubicación</th><th>Estado</th><th>Ciclos Uso</th><th>Precio</th></tr></thead>
+          <tbody>
+            <tr><td>PM-3030 × 6</td><td>Hormigón</td><td>Sevilla</td><td style="color:var(--electric)">Disponible</td><td>0 (nuevo)</td><td style="font-weight:700">1.750 €/ud</td></tr>
+            <tr><td>PM-6030 × 4</td><td>CLT</td><td>Valencia</td><td style="color:var(--electric)">Disponible</td><td>1</td><td style="font-weight:700">2.100 €/ud</td></tr>
+            <tr><td>PM-3015 × 12</td><td>Madera</td><td>Barcelona</td><td style="color:var(--electric)">Disponible</td><td>0 (nuevo)</td><td style="font-weight:700">980 €/ud</td></tr>
+            <tr><td>PM-6030 × 2</td><td>Hormigón</td><td>Madrid</td><td style="color:var(--amber)">Reservada</td><td>1</td><td style="font-weight:700">2.900 €/ud</td></tr>
+            <tr><td>PM-9030 × 1</td><td>Hormigón</td><td>Menorca</td><td style="color:var(--electric)">Disponible</td><td>0 (nuevo)</td><td style="font-weight:700">4.200 €/ud</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+// ═══ LOADER ═══
+window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('loader').classList.add('done');document.body.classList.remove('loading')},2500)});
+
+// ═══ NAV PANEL SWITCHING ═══
+document.querySelectorAll('.sb-item[data-panel]').forEach(item=>{
+  item.addEventListener('click',()=>{
+    document.querySelectorAll('.sb-item').forEach(n=>n.classList.remove('act'));
+    item.classList.add('act');
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('act'));
+    const panel=document.getElementById('panel-'+item.dataset.panel);
+    if(panel)panel.classList.add('act');
+    document.getElementById('bcTitle').textContent=item.textContent.trim().replace(/\d+$/,'').trim();
+    // Close sidebar on mobile
+    if(innerWidth<900)document.getElementById('sidebar').classList.remove('open');
+  });
+});
+
+// ═══ MINI CHART ═══
+const cd=[18,24,32,28,35,42,38,45,52,48,56,47],mx=Math.max(...cd),ch=document.getElementById('netChart');
+cd.forEach((v,i)=>{const b=document.createElement('div');b.className='mbar';b.style.height=(v/mx*100)+'%';b.style.flex='1';if(i===cd.length-1)b.style.background='var(--coral)';ch.appendChild(b)});
+
+// ═══ ROLE CHANGE ═══
+document.getElementById('roleSelector').addEventListener('change',function(){
+  const names={'architect':'Architect','engineer':'Engineer','project-manager':'Project Manager','producer':'Producer','assembler':'Assembler','coordinator':'Assembly Coordinator','carrier':'Carrier','supplier':'Supplier','developer':'Property Developer','builder':'Builder','user':'User','city':'City'};
+  document.querySelector('.sb-role').textContent=(names[this.value]||this.value)+' · OADAC Menorca';
+  const prod=['producer','assembler','coordinator','carrier','supplier'],des=['architect','engineer','project-manager'];
+  document.querySelectorAll('.sb-item').forEach(item=>{
+    const p=item.dataset.panel;
+    if(prod.includes(this.value)){item.style.opacity=['builder','twin'].includes(p)?'.35':'1'}
+    else if(des.includes(this.value)){item.style.opacity=['factory','assembly'].includes(p)?'.35':'1'}
+    else{item.style.opacity='1'}
+  });
+});
+
+// ═══ MOBILE MENU ═══
+const mt=document.getElementById('menuToggle');
+function checkMobile(){mt.style.display=innerWidth<900?'flex':'none'}
+checkMobile();window.addEventListener('resize',checkMobile);
+mt.addEventListener('click',()=>document.getElementById('sidebar').classList.toggle('open'));
+</script>
+</body>
+</html>

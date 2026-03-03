@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CUEVA Community — Red Profesional de Construcción Industrializada</title>
+<meta name="description" content="Conecta con profesionales, explora proyectos, intercambia placas certificadas y construye el futuro de la edificación sostenible.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ╔══════════════════════════════════════════════════════╗
+   ║  CUEVA · COMMUNITY v2.0                              ║
+   ║  Red Profesional de Construcción Industrializada     ║
+   ╚══════════════════════════════════════════════════════╝ */
+:root{
+  --navy:#0F1A2E;--ink:#1B2951;--navy-deep:#0A1220;
+  --electric:#00C9A7;--coral:#FF4D35;--amber:#FFAA2C;--sky:#2B7AFF;--violet:#7C5CFC;--pink:#EC4899;
+  --bg:#F8F7F4;--bg2:#F0EDE6;--bg3:#E8E4DB;--white:#FFF;
+  --text:#1A1A1A;--text2:#555;--text3:#999;--text4:#CCC;--border:#DDD8CE;
+  --d:'Urbanist',sans-serif;--b:'Manrope',sans-serif;--m:'JetBrains Mono',monospace;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --sh:0 4px 24px rgba(15,26,46,.06);--sh-lg:0 12px 40px rgba(15,26,46,.1);
+  --rad:12px;--rad-lg:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--b);line-height:1.5;color:var(--text);background:var(--bg);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body.loading{overflow:hidden}
+h1,h2,h3,h4,h5{font-family:var(--d);font-weight:800;line-height:1.2}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;border:none;font-family:inherit}
+::selection{background:var(--navy);color:var(--electric)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}::-webkit-scrollbar-thumb:hover{background:var(--electric)}
+
+/* ─── LOADING ─── */
+.loader{position:fixed;inset:0;z-index:999999;background:var(--navy);display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity .8s ease,visibility .8s}
+.loader.done{opacity:0;visibility:hidden;pointer-events:none}
+.loader-geo{width:80px;height:80px;margin-bottom:1.5rem}
+.loader-geo svg{width:100%;height:100%;animation:lspin 4s linear infinite}
+@keyframes lspin{to{transform:rotate(360deg)}}
+.loader-geo .lg-o{fill:none;stroke:rgba(255,255,255,.1);stroke-width:2}
+.loader-geo .lg-e{fill:none;stroke:var(--electric);stroke-width:2;stroke-dasharray:200;stroke-dashoffset:200;animation:ldash 2s var(--ease) forwards}
+@keyframes ldash{to{stroke-dashoffset:0}}
+.loader-t{font-family:var(--d);font-size:1.2rem;font-weight:800;letter-spacing:8px;color:#fff;text-transform:uppercase;opacity:0;animation:lfu .8s .8s var(--ease) forwards}
+.loader-s{font-family:var(--m);font-size:.5rem;letter-spacing:3px;color:rgba(255,255,255,.25);margin-top:.4rem;opacity:0;animation:lfu .8s 1s var(--ease) forwards}
+@keyframes lfu{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── GRAIN ─── */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:99999;opacity:.012;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ═══ NAV ═══ */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:.75rem 3rem;display:flex;align-items:center;justify-content:space-between;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(248,247,244,.85);border-bottom:1px solid var(--border);transition:all .4s var(--ease)}
+.nav-logo{display:flex;align-items:center;gap:.6rem}
+.nav-geo{width:32px;height:32px}
+.nav-geo svg{width:100%;height:100%}
+.nav-geo .ng-o{fill:none;stroke:var(--navy);stroke-width:2;animation:morph 14s ease-in-out infinite}
+@keyframes morph{0%,100%{d:path('M16 1C24.5 1 31 7.5 31 16C31 24.5 24.5 31 16 31C7.5 31 1 24.5 1 16C1 7.5 7.5 1 16 1Z')}50%{d:path('M16 1C22 1 31 5 31 13C31 24 26 31 16 31C6 31 1 26 1 16C1 5 10 1 16 1Z')}}
+.nav-geo .ng-sq{fill:none;stroke:var(--electric);stroke-width:1;opacity:.5}
+.nav-geo .ng-tri{fill:none;stroke:var(--coral);stroke-width:1;opacity:.4}
+.nav-geo .ng-dot{fill:var(--electric);opacity:.6}
+.nav-brand{font-family:var(--d);font-weight:800;font-size:1.1rem;letter-spacing:3px;color:var(--navy)}
+.nav-brand span{display:block;font-family:var(--m);font-size:.45rem;font-weight:400;letter-spacing:2px;color:var(--electric)}
+.nav-links{display:flex;gap:1.8rem;align-items:center}
+.nav-links a{color:var(--text2);font-size:.82rem;font-weight:500;transition:color .3s}
+.nav-links a:hover{color:var(--electric)}
+.nav-cta{background:var(--navy)!important;color:#fff!important;padding:.45rem 1.2rem;border-radius:8px;font-weight:700;font-family:var(--d);transition:all .3s var(--ease)!important}
+.nav-cta:hover{background:var(--coral)!important}
+
+/* ═══ HERO ═══ */
+.hero{padding:7.5rem 3rem 3.5rem;position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(15,26,46,.02),rgba(0,201,167,.01),transparent)}
+.hero h1{font-family:var(--d);font-size:clamp(2.2rem,4.5vw,3.6rem);font-weight:900;text-align:center;letter-spacing:-1.5px;color:var(--navy);margin-bottom:.4rem}
+.hero h1 .grad{background:linear-gradient(135deg,var(--violet),var(--electric),var(--sky));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{text-align:center;color:var(--text2);max-width:560px;margin:0 auto 1.8rem;font-size:.95rem}
+.hero-actions{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
+.btn{padding:.6rem 1.5rem;border-radius:8px;font-family:var(--d);font-weight:700;font-size:.85rem;display:inline-flex;align-items:center;gap:.4rem;transition:all .3s var(--ease);cursor:pointer;border:none}
+.btn-p{background:var(--navy);color:#fff}
+.btn-p:hover{background:var(--coral);transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,77,53,.15)}
+.btn-o{background:var(--white);color:var(--text);border:1px solid var(--border)}
+.btn-o:hover{border-color:var(--electric);color:var(--electric)}
+
+/* ═══ LAYOUT ═══ */
+.layout{display:grid;grid-template-columns:260px 1fr 280px;gap:0;min-height:100vh}
+.sb{background:var(--white);border-right:1px solid var(--border);padding:1.4rem;position:sticky;top:58px;height:calc(100vh - 58px);overflow-y:auto}
+.mn{padding:1.75rem 2rem}
+.as{background:var(--white);border-left:1px solid var(--border);padding:1.4rem;position:sticky;top:58px;height:calc(100vh - 58px);overflow-y:auto}
+
+/* Sidebar Profile */
+.pf{text-align:center;padding:1.3rem 0;border-bottom:1px solid var(--border);margin-bottom:1.3rem}
+.pf-av{width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,var(--electric),var(--sky));display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin:0 auto .6rem;position:relative}
+.pf-badge{position:absolute;bottom:-2px;right:-2px;background:var(--amber);color:var(--navy);font-family:var(--m);font-size:.5rem;font-weight:700;padding:1px 5px;border-radius:4px}
+.pf-name{font-family:var(--d);font-weight:700;font-size:1rem;color:var(--navy)}
+.pf-role{font-family:var(--m);font-size:.6rem;color:var(--electric);text-transform:uppercase;letter-spacing:1.5px;margin-top:.1rem}
+.pf-stats{display:flex;justify-content:center;gap:1.5rem;margin-top:.6rem}
+.pf-stat-v{font-family:var(--d);font-weight:800;font-size:.95rem;color:var(--navy)}
+.pf-stat-l{font-size:.6rem;color:var(--text3)}
+
+/* Sidebar Nav */
+.sb-sec{margin-bottom:1.3rem}
+.sb-sec-t{font-family:var(--m);font-size:.5rem;color:var(--electric);text-transform:uppercase;letter-spacing:2px;margin-bottom:.5rem}
+.sb-lnk{display:flex;align-items:center;gap:.65rem;padding:.45rem .65rem;border-radius:8px;font-size:.82rem;color:var(--text2);cursor:pointer;transition:all .2s var(--ease)}
+.sb-lnk:hover{background:var(--bg);color:var(--navy)}
+.sb-lnk.act{background:rgba(0,201,167,.06);color:var(--electric);border-left:2px solid var(--electric)}
+.sb-lnk .ico{width:18px;text-align:center;font-size:.85rem}
+.sb-lnk .bdg{margin-left:auto;background:var(--coral);color:#fff;font-family:var(--m);font-size:.5rem;font-weight:700;padding:1px 5px;border-radius:10px}
+
+/* Section headers */
+.sec-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.3rem}
+.sec-bar h2{font-family:var(--d);font-size:1.25rem;font-weight:800;letter-spacing:-.3px;color:var(--navy)}
+.sec-actions{display:flex;gap:.4rem}
+.chip{padding:.35rem .85rem;border-radius:100px;font-family:var(--m);font-size:.65rem;font-weight:600;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;transition:all .25s}
+.chip:hover,.chip.act{background:rgba(0,201,167,.06);border-color:var(--electric);color:var(--electric)}
+.chip-add{background:var(--navy);color:#fff;border-color:var(--navy)}
+.chip-add:hover{background:var(--coral);border-color:var(--coral)}
+
+/* ═══ NETWORK MAP ═══ */
+.net-map{background:var(--white);border:1px solid var(--border);border-radius:var(--rad-lg);padding:1.5rem;margin-bottom:1.75rem;position:relative;overflow:hidden}
+.net-map canvas{width:100%;height:280px;display:block;border-radius:var(--rad)}
+.net-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-top:1.2rem}
+.ns{display:flex;align-items:center;gap:.7rem;padding:.6rem;background:var(--bg);border-radius:8px;border:1px solid var(--border)}
+.ns-bar{width:70px;height:5px;background:var(--bg2);border-radius:3px;overflow:hidden}
+.ns-fill{height:100%;border-radius:3px}
+.ns-lbl{font-size:.72rem;color:var(--text2)}
+.ns-val{font-family:var(--m);font-size:.72rem;font-weight:700;margin-left:auto}
+
+/* ═══ MARKETPLACE ═══ */
+.mkt{background:var(--white);border:1px solid var(--border);border-radius:var(--rad-lg);padding:1.5rem;margin-bottom:1.75rem}
+.mkt-tabs{display:flex;gap:.4rem;margin-bottom:1.2rem;flex-wrap:wrap}
+.mkt-tab{padding:.4rem 1rem;border-radius:8px;font-family:var(--m);font-size:.7rem;font-weight:600;cursor:pointer;background:transparent;border:1px solid var(--border);color:var(--text3);transition:all .25s}
+.mkt-tab.act{background:rgba(0,201,167,.06);border-color:var(--electric);color:var(--electric)}
+.mkt-items{display:grid;grid-template-columns:repeat(2,1fr);gap:.9rem}
+.mkt-tc{display:none}.mkt-tc.act{display:contents}
+.mkt-i{background:var(--bg);border:1px solid var(--border);border-radius:var(--rad);padding:1.1rem;transition:all .3s var(--ease)}
+.mkt-i:hover{border-color:var(--electric);transform:translateY(-2px);box-shadow:var(--sh)}
+.mkt-i-hdr{display:flex;justify-content:space-between;align-items:start;margin-bottom:.35rem}
+.mkt-i-nm{font-family:var(--d);font-weight:700;font-size:.88rem;color:var(--navy)}
+.mkt-i-pr{font-family:var(--m);font-size:.8rem;color:var(--electric);font-weight:700}
+.mkt-i-desc{font-size:.72rem;color:var(--text2);line-height:1.5;margin-bottom:.6rem}
+.mkt-tags{display:flex;gap:.25rem;flex-wrap:wrap}
+.tag{font-family:var(--m);font-size:.55rem;padding:2px 6px;border-radius:3px;background:rgba(0,201,167,.06);color:var(--electric);font-weight:600}
+.tag.stock{background:rgba(255,170,44,.08);color:var(--amber)}
+.tag.new{background:rgba(255,77,53,.06);color:var(--coral)}
+
+/* ═══ OFFERS ═══ */
+.offers{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.75rem}
+.off{background:var(--white);border:1px solid var(--border);border-radius:var(--rad);padding:.85rem;display:flex;gap:.8rem;align-items:center;transition:all .25s var(--ease);cursor:pointer}
+.off:hover{border-color:var(--electric);box-shadow:var(--sh)}
+.off-ico{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+.off-info{flex:1}
+.off-nm{font-family:var(--d);font-weight:700;font-size:.85rem;color:var(--navy)}
+.off-det{font-size:.7rem;color:var(--text3);margin-top:.1rem}
+.off-act{font-family:var(--m);font-size:.65rem;color:var(--electric);font-weight:600;white-space:nowrap}
+
+/* ═══ PROJECTS GRID ═══ */
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin-bottom:1.75rem}
+.pj{background:var(--white);border:1px solid var(--border);border-radius:var(--rad);overflow:hidden;transition:all .3s var(--ease);cursor:pointer}
+.pj:hover{transform:translateY(-3px);border-color:var(--electric);box-shadow:var(--sh-lg)}
+.pj.start{background:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.8rem;text-align:center;color:#fff}
+.pj.start h3{font-family:var(--d);font-size:1rem;font-weight:800;letter-spacing:1px}
+.pj.start p{color:rgba(255,255,255,.4);font-size:.72rem;margin-top:.3rem}
+.pj-img{height:145px;position:relative;display:flex;align-items:center;justify-content:center;font-size:2.5rem}
+.pj-img.c1{background:linear-gradient(135deg,#e8f5e8,#d5ede5)}.pj-img.c2{background:linear-gradient(135deg,#f5ede5,#ede0d0)}
+.pj-img.c3{background:linear-gradient(135deg,#e5e8f5,#d5d8ed)}.pj-img.c4{background:linear-gradient(135deg,#f0e5f5,#e5d5ed)}
+.pj-img.c5{background:linear-gradient(135deg,#e5f0f5,#d5e5ed)}.pj-img.c6{background:linear-gradient(135deg,#f5e5e5,#edd5d5)}
+.pj-img.c7{background:linear-gradient(135deg,#eef5e5,#e0edd5)}.pj-img.c8{background:linear-gradient(135deg,#e5f5f0,#d5ede5)}
+.pj-info{padding:.85rem}
+.pj-title{font-family:var(--d);font-weight:700;font-size:.85rem;color:var(--navy)}
+.pj-author{font-size:.7rem;color:var(--text3);margin-top:.1rem}
+.pj-meta{display:flex;gap:.8rem;margin-top:.5rem;font-family:var(--m);font-size:.6rem;color:var(--text3)}
+
+/* ═══ ASIDE ═══ */
+.as-sec{margin-bottom:1.75rem}
+.as-t{font-family:var(--m);font-size:.5rem;color:var(--electric);text-transform:uppercase;letter-spacing:2px;margin-bottom:.8rem;display:flex;align-items:center;justify-content:space-between}
+.exch{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:.75rem;margin-bottom:.5rem}
+.exch-hdr{display:flex;justify-content:space-between;align-items:center}
+.exch-val{font-family:var(--m);font-size:.78rem;font-weight:700;color:var(--navy)}
+.exch-lbl{font-size:.65rem;color:var(--text3)}
+.exch-dir{font-family:var(--m);font-size:.6rem;padding:2px 6px;border-radius:4px;font-weight:700}
+.exch-dir.up{background:rgba(0,201,167,.06);color:var(--electric)}
+.exch-dir.dn{background:rgba(255,77,53,.06);color:var(--coral)}
+.mchart{height:40px;display:flex;align-items:flex-end;gap:2px}
+.mbar{width:100%;background:rgba(0,201,167,.15);border-radius:2px;transition:height .3s}
+.mbar:hover{background:var(--electric)}
+
+/* Role grid */
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:.35rem}
+.role-pill{display:flex;align-items:center;gap:.4rem;padding:.4rem .55rem;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-size:.72rem;cursor:pointer;transition:all .2s}
+.role-pill:hover{border-color:var(--electric)}
+.role-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.role-cnt{margin-left:auto;font-family:var(--m);font-size:.6rem;color:var(--text3)}
+
+/* ═══ RESPONSIVE ═══ */
+@media(max-width:1200px){.layout{grid-template-columns:1fr}.sb,.as{display:none}.mn{padding:1.25rem 1rem}}
+@media(max-width:768px){.proj-grid{grid-template-columns:1fr}.mkt-items{grid-template-columns:1fr}.net-stats{grid-template-columns:1fr}.hero h1{font-size:2.2rem}nav{padding:.65rem 1.2rem}.nav-links{display:none}.hero{padding:6rem 1.5rem 2.5rem}}
+</style>
+</head>
+<body class="loading">
+
+<!-- LOADER -->
+<div class="loader" id="loader">
+<div class="loader-geo"><svg viewBox="0 0 80 80"><circle cx="40" cy="40" r="35" class="lg-o"/><circle cx="40" cy="40" r="35" class="lg-e"/></svg></div>
+<div class="loader-t">CUEVA</div>
+<div class="loader-s">Community · Red Profesional</div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-geo"><svg viewBox="0 0 32 32"><path d="M16 1C24.5 1 31 7.5 31 16C31 24.5 24.5 31 16 31C7.5 31 1 24.5 1 16C1 7.5 7.5 1 16 1Z" class="ng-o"/><rect x="9" y="9" width="7" height="7" rx="1" class="ng-sq"/><polygon points="19,8 25,19 13,19" class="ng-tri"/><circle cx="16" cy="16" r="1.5" class="ng-dot"/></svg></div>
+    <div class="nav-brand">CUEVA<span>COMMUNITY</span></div>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Inicio</a>
+    <a href="#network">Red</a>
+    <a href="#projects">Proyectos</a>
+    <a href="#marketplace">Marketplace</a>
+    <a href="dashboard.html" class="nav-cta">Mi Dashboard →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Bienvenido a la <span class="grad">comunidad</span></h1>
+  <p>Conecta con profesionales, explora proyectos, intercambia placas certificadas y construye el futuro de la edificación industrializada.</p>
+  <div class="hero-actions">
+    <button class="btn btn-p">▶ PLAY RV</button>
+    <button class="btn btn-o">▶ PLAY AR</button>
+    <button class="btn btn-o">Entrar al Metaverso CUEVA →</button>
+  </div>
+</div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="sb">
+    <div class="pf">
+      <div class="pf-av">👤<div class="pf-badge">5/5</div></div>
+      <div class="pf-name">Pablo Martínez</div>
+      <div class="pf-role">Community Member</div>
+      <div class="pf-stats">
+        <div><div class="pf-stat-v">250</div><div class="pf-stat-l">Followers</div></div>
+        <div><div class="pf-stat-v">557</div><div class="pf-stat-l">Following</div></div>
+      </div>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-sec-t">Mi Página Pública</div>
+      <a class="sb-lnk" href="#"><span class="ico">📤</span>Contenido compartido</a>
+      <a class="sb-lnk" href="#"><span class="ico">❤️</span>Contenido gustado</a>
+      <a class="sb-lnk" href="#"><span class="ico">📚</span>Mis bibliotecas</a>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-sec-t">Mis Proyectos</div>
+      <a class="sb-lnk" href="#"><span class="ico">🎨</span>Diseños</a>
+      <a class="sb-lnk" href="#"><span class="ico">🏠</span>Propiedades<span class="bdg">3</span></a>
+      <a class="sb-lnk act" href="#"><span class="ico">🔨</span>Proyectos activos</a>
+      <a class="sb-lnk" href="#"><span class="ico">📋</span>Contratos</a>
+      <a class="sb-lnk" href="#"><span class="ico">🏆</span>Certificaciones</a>
+      <a class="sb-lnk" href="#"><span class="ico">💰</span>Facturas</a>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-sec-t">Nuevo Pedido</div>
+      <a class="sb-lnk" href="#"><span class="ico">🛒</span>Comprar</a>
+      <a class="sb-lnk" href="#"><span class="ico">🔄</span>Rehabilitar</a>
+      <a class="sb-lnk" href="#"><span class="ico">↩️</span>Devolver</a>
+      <a class="sb-lnk" href="#"><span class="ico">👨‍💼</span>Contactar experto</a>
+      <a class="sb-lnk" href="#"><span class="ico">⚠️</span>Reportar problema</a>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-sec-t">Herramientas & Formación</div>
+      <a class="sb-lnk" href="#"><span class="ico">🔧</span>Hardware & Software<span class="bdg">1</span></a>
+      <a class="sb-lnk" href="#"><span class="ico">📦</span>Tracking</a>
+      <a class="sb-lnk" href="#"><span class="ico">🎓</span>Cursos CUEVA Academy</a>
+      <a class="sb-lnk" href="#"><span class="ico">📊</span>Analytics</a>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN ═══ -->
+  <main class="mn">
+
+    <!-- Network Map -->
+    <div class="sec-bar" id="network"><h2>🌐 Red de Neuronas CUEVA</h2></div>
+    <div class="net-map">
+      <canvas id="networkCanvas"></canvas>
+      <div class="net-stats">
+        <div class="ns"><div class="ns-bar"><div class="ns-fill" style="width:72%;background:var(--electric)"></div></div><div class="ns-lbl">Designers</div><div class="ns-val" style="color:var(--electric)">72%</div></div>
+        <div class="ns"><div class="ns-bar"><div class="ns-fill" style="width:60%;background:var(--sky)"></div></div><div class="ns-lbl">Producers</div><div class="ns-val" style="color:var(--sky)">60%</div></div>
+        <div class="ns"><div class="ns-bar"><div class="ns-fill" style="width:82%;background:var(--amber)"></div></div><div class="ns-lbl">CLT Producers</div><div class="ns-val" style="color:var(--amber)">82%</div></div>
+        <div class="ns"><div class="ns-bar"><div class="ns-fill" style="width:50%;background:var(--coral)"></div></div><div class="ns-lbl">Assemblers</div><div class="ns-val" style="color:var(--coral)">50%</div></div>
+        <div class="ns"><div class="ns-bar"><div class="ns-fill" style="width:50%;background:var(--violet)"></div></div><div class="ns-lbl">Coordinators</div><div class="ns-val" style="color:var(--violet)">50%</div></div>
+        <div class="ns"><div class="ns-bar"><div class="ns-fill" style="width:50%;background:var(--pink)"></div></div><div class="ns-lbl">Research I+D</div><div class="ns-val" style="color:var(--pink)">50%</div></div>
+      </div>
+    </div>
+
+    <!-- Marketplace -->
+    <div class="sec-bar" id="marketplace"><h2>🏪 Marketplace</h2></div>
+    <div class="mkt">
+      <div class="mkt-tabs">
+        <div class="mkt-tab act" data-tab="viviendas">Viviendas</div>
+        <div class="mkt-tab" data-tab="placas">Placas CUEVA</div>
+        <div class="mkt-tab" data-tab="herramientas">Herramientas</div>
+        <div class="mkt-tab" data-tab="servicios">Servicios</div>
+      </div>
+      <div class="mkt-items" id="mktItems">
+        <!-- Tab: Viviendas -->
+        <div class="mkt-tc act" data-tab="viviendas">
+          <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">Modelo Basic Evolutivo</div><div class="mkt-i-pr">12.600 €</div></div><div class="mkt-i-desc">4 familias evolutivas, 542+ configuraciones. Desde 18m² ampliable hasta 250m². Estructura reutilizable 200+ ciclos.</div><div class="mkt-tags"><span class="tag new">NUEVO</span><span class="tag">18-250 m²</span><span class="tag">&lt;3 meses</span></div></div>
+          <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">Modelo OUTSIDE</div><div class="mkt-i-pr">79.000 €</div></div><div class="mkt-i-desc">Tres filtros de privacidad y confort: espacios abiertos, cubiertos por cristal y techados. 80-250m².</div><div class="mkt-tags"><span class="tag">80-250 m²</span><span class="tag">Independiente</span></div></div>
+          <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">Modelo INSIDE</div><div class="mkt-i-pr">149.000 €</div></div><div class="mkt-i-desc">Patio interior bioclimático. Adosada de 129m² mínimo con distribución innovadora.</div><div class="mkt-tags"><span class="tag">150-450 m²</span><span class="tag">Adosada</span></div></div>
+          <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">Modelo HI</div><div class="mkt-i-pr">299.000 €</div></div><div class="mkt-i-desc">Alto standing. Oficinas independientes, zona invitados. 6-7 dormitorios, perspectivas visuales.</div><div class="mkt-tags"><span class="tag">300-900 m²</span><span class="tag">Lujo</span></div></div>
+          <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">Modelo LINE</div><div class="mkt-i-pr">119.000 €</div></div><div class="mkt-i-desc">Adaptable a topografía. Concepto fluido de vivienda con distribución lineal optimizada.</div><div class="mkt-tags"><span class="tag">100-300 m²</span><span class="tag">Topografía</span></div></div>
+        </div>
+        <!-- Tab: Placas -->
+        <div class="mkt-tc" data-tab="placas">
+          <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">PM-3030 Hormigón ×6</div><div class="mkt-i-pr">1.750 €/ud</div></div><div class="mkt-i-desc">Placa Multienlace 3×3m hormigón. 9m² por placa. Disponible Sevilla. 0 ciclos. IoT + RFID integrado.</div><div class="mkt-tags"><span class="tag new">DISPONIBLE</span><span class="tag">3×3m</span><span class="tag">🔗 PoI</span></div></div>
+          <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">PM-6030 CLT ×4</div><div class="mkt-i-pr">2.100 €/ud</div></div><div class="mkt-i-desc">Placa Multienlace 6×3m madera CLT. 18m². Valencia. 1 ciclo de uso, certificación intacta.</div><div class="mkt-tags"><span class="tag">6×3m</span><span class="tag">1 ciclo</span><span class="tag">🌱 CLT</span></div></div>
+          <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">PM-3015 Madera ×12</div><div class="mkt-i-pr">980 €/ud</div></div><div class="mkt-i-desc">Placa Multienlace 3×1.5m madera. 4.5m². Barcelona. Nuevas de fábrica. DPP verificado.</div><div class="mkt-tags"><span class="tag new">NUEVA</span><span class="tag">3×1.5m</span><span class="tag">🪵 Madera</span></div></div>
+          <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">PM-6030 Hormigón ×2</div><div class="mkt-i-pr">2.900 €/ud</div></div><div class="mkt-i-desc">Placa Multienlace 6×3m hormigón. 18m². Madrid. 1 ciclo. Reservada parcialmente.</div><div class="mkt-tags"><span class="tag stock">RESERVADA</span><span class="tag">6×3m</span><span class="tag">🔗 PoI</span></div></div>
+          <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">PM-9030 Hormigón ×1</div><div class="mkt-i-pr">4.200 €/ud</div></div><div class="mkt-i-desc">La placa más grande: 9×3m hormigón. 27m². Menorca. Nueva de Prefab. Ciutadella.</div><div class="mkt-tags"><span class="tag new">DISPONIBLE</span><span class="tag">9×3m</span><span class="tag">📦 Menorca</span></div></div>
+          <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">PM-1515 Multipanel ×20</div><div class="mkt-i-pr">650 €/ud</div></div><div class="mkt-i-desc">Placa más pequeña: 1.5×1.5m multipanel. 2.25m². Stock Madrid. Ideales para subdivisiones.</div><div class="mkt-tags"><span class="tag stock">STOCK</span><span class="tag">1.5×1.5m</span><span class="tag">⚡ Multipanel</span></div></div>
+        </div>
+        <!-- Tab: Herramientas -->
+        <div class="mkt-tc" data-tab="herramientas">
+          <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">Break Down CUEVA BASIC</div><div class="mkt-i-pr">GRATIS</div></div><div class="mkt-i-desc">Descomposición automática de proyectos en placas CUEVA con conteo de materiales y presupuesto.</div><div class="mkt-tags"><span class="tag new">FREE</span><span class="tag">Diseño</span><span class="tag">Automático</span></div></div>
+          <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">Smart Environment Builder PRO</div><div class="mkt-i-pr">49 €/mes</div></div><div class="mkt-i-desc">Diseño generativo cloud-based con IA. Optimización automática de configuraciones y gemelo digital.</div><div class="mkt-tags"><span class="tag">Cloud</span><span class="tag">IA</span><span class="tag">3D</span></div></div>
+          <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">Carbon, Cost & Time Calculator</div><div class="mkt-i-pr">GRATIS</div></div><div class="mkt-i-desc">Calculadora de impacto medioambiental, presupuesto y cronograma para proyectos CUEVA.</div><div class="mkt-tags"><span class="tag new">FREE</span><span class="tag">CO₂</span><span class="tag">Presupuesto</span></div></div>
+          <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">Digital Twin Visualizer</div><div class="mkt-i-pr">29 €/mes</div></div><div class="mkt-i-desc">Gemelo digital con tracking IoT en tiempo real. Monitorización de obra y sensores integrados.</div><div class="mkt-tags"><span class="tag">IoT</span><span class="tag">Real-time</span><span class="tag">3D</span></div></div>
+          <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">Blockchain Cert Viewer</div><div class="mkt-i-pr">GRATIS</div></div><div class="mkt-i-desc">Verificación de Proof of Installation, DPP (Digital Product Passport) y trazabilidad completa.</div><div class="mkt-tags"><span class="tag new">FREE</span><span class="tag">🔗 Blockchain</span><span class="tag">DPP</span></div></div>
+        </div>
+        <!-- Tab: Servicios -->
+        <div class="mkt-tc" data-tab="servicios">
+          <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">Montaje CUEVA Certificado</div><div class="mkt-i-pr">Consultar</div></div><div class="mkt-i-desc">Equipos de montaje certificados CUEVA. Manual integrado. Verificación R2 Unitree + IoT en cada paso.</div><div class="mkt-tags"><span class="tag">Montaje</span><span class="tag">Certificado</span><span class="tag">R2 Unitree</span></div></div>
+          <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">Transporte Especializado</div><div class="mkt-i-pr">Desde 2.800 €</div></div><div class="mkt-i-desc">Logística optimizada con tracking GPS. Rutas IA y coordinación just-in-time de placas CUEVA.</div><div class="mkt-tags"><span class="tag">🚛 Logística</span><span class="tag">GPS</span><span class="tag">IA</span></div></div>
+          <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">Consultoría CUEVA</div><div class="mkt-i-pr">150 €/h</div></div><div class="mkt-i-desc">Asesoramiento técnico por arquitectos e ingenieros CUEVA certificados. Optimización de proyectos.</div><div class="mkt-tags"><span class="tag">Consultoría</span><span class="tag">Técnica</span></div></div>
+          <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">Formación CUEVA Academy</div><div class="mkt-i-pr">Desde 299 €</div></div><div class="mkt-i-desc">Cursos certificados: Sistema Constructivo, Smart Builder, Blockchain, IoT, Montaje, R2 Unitree.</div><div class="mkt-tags"><span class="tag new">NUEVO</span><span class="tag">🎓 Academy</span><span class="tag">Certificación</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ofertas -->
+    <div class="sec-bar"><h2>📋 Ofertas Activas</h2><button class="chip">Ver todas →</button></div>
+    <div class="offers">
+      <div class="off"><div class="off-ico" style="background:rgba(0,201,167,.06)">🏠</div><div class="off-info"><div class="off-nm">Son Parc Menorca</div><div class="off-det">3000m² · 16 viviendas · Menorca</div></div><div class="off-act">Ver más →</div></div>
+      <div class="off"><div class="off-ico" style="background:rgba(0,201,167,.06)">🏠</div><div class="off-info"><div class="off-nm">House in Móstoles</div><div class="off-det">130m² · Unifamiliar · Madrid</div></div><div class="off-act">Ver más →</div></div>
+      <div class="off"><div class="off-ico" style="background:rgba(0,201,167,.06)">🡡</div><div class="off-info"><div class="off-nm">House in Málaga</div><div class="off-det">560m² · Unifamiliar · Andalucía</div></div><div class="off-act">Ver más →</div></div>
+      <div class="off"><div class="off-ico" style="background:rgba(43,122,255,.06)">🏢</div><div class="off-info"><div class="off-nm">Office in Barcelona</div><div class="off-det">70m² · Oficina · Catalunya</div></div><div class="off-act">Ver más →</div></div>
+      <div class="off"><div class="off-ico" style="background:rgba(255,170,44,.06)">🏘️</div><div class="off-info"><div class="off-nm">Collective Housing Madrid</div><div class="off-det">640m² · Residencial · Madrid</div></div><div class="off-act">Ver más →</div></div>
+    </div>
+
+    <!-- Community Projects -->
+    <div class="sec-bar" id="projects">
+      <h2>🚀 Proyectos Comunidad</h2>
+      <div class="sec-actions"><button class="chip chip-add">+ Nuevo Proyecto</button><button class="chip">Filtrar ↕</button></div>
+    </div>
+    <div class="proj-grid">
+      <div class="pj start"><div style="font-size:2.5rem;margin-bottom:.5rem">🏗️</div><h3>CUEVA METAVERSE</h3><h3 style="font-weight:400;font-size:.8rem;margin-top:.2rem">Smart Environment Builder</h3><p style="margin-top:.8rem">START A NEW PROJECT +</p></div>
+      <div class="pj"><div class="pj-img c1">🌆</div><div class="pj-info"><div class="pj-title">Smart Street City</div><div class="pj-author">by glendale</div><div class="pj-meta"><span>497 views</span><span>2 respects</span><span>5 requests</span></div></div></div>
+      <div class="pj"><div class="pj-img c2">🌡️</div><div class="pj-info"><div class="pj-title">Climate Chamber System</div><div class="pj-author">by ms_peach</div><div class="pj-meta"><span>497 views</span><span>2 respects</span><span>5 requests</span></div></div></div>
+      <div class="pj"><div class="pj-img c3">🔬</div><div class="pj-info"><div class="pj-title">Pavement Porosity Analysis</div><div class="pj-author">by coauthor</div><div class="pj-meta"><span>497 views</span><span>2 respects</span><span>5 requests</span></div></div></div>
+      <div class="pj"><div class="pj-img c4">🏗️</div><div class="pj-info"><div class="pj-title">Heuwaage-hochhaus</div><div class="pj-author">by Miller & Maranta</div><div class="pj-meta"><span>497 views</span><span>2 respects</span><span>5 requests</span></div></div></div>
+      <div class="pj"><div class="pj-img c5">💧</div><div class="pj-info"><div class="pj-title">Integrated Humidity Control</div><div class="pj-author">by paulsb</div><div class="pj-meta"><span>497 views</span><span>2 respects</span><span>5 requests</span></div></div></div>
+      <div class="pj"><div class="pj-img c6">🌳</div><div class="pj-info"><div class="pj-title">House for Trees</div><div class="pj-author">by VTN architects</div><div class="pj-meta"><span>497 views</span><span>2 respects</span><span>5 requests</span></div></div></div>
+      <div class="pj"><div class="pj-img c7">🔐</div><div class="pj-info"><div class="pj-title">Wall Access Control</div><div class="pj-author">by aritro mukherjee</div><div class="pj-meta"><span>497 views</span><span>2 respects</span><span>5 requests</span></div></div></div>
+      <div class="pj"><div class="pj-img c8">🔌</div><div class="pj-info"><div class="pj-title">Plugin Break Down CUEVA</div><div class="pj-author">by KooZa</div><div class="pj-meta"><span>497 views</span><span>2 respects</span><span>5 requests</span></div></div></div>
+    </div>
+
+    <!-- Marketplace physical items -->
+    <div class="sec-bar"><h2>📦 Componentes Destacados</h2></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:1.75rem">
+      <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">Placa PM-3030 — Hormigón</div><div class="mkt-i-pr">Consultar</div></div><div class="mkt-i-desc">Placa Multienlace estándar 3×3m, 9m². Uso estructura y fachada. Hormigón armado C30/37. TPE integrado.</div><div class="mkt-tags"><span class="tag stock">EN STOCK</span><span class="tag">3×3m</span><span class="tag">9 m²</span></div></div>
+      <div class="mkt-i"><div class="mkt-i-hdr"><div class="mkt-i-nm">MOOLDE Factory License</div><div class="mkt-i-pr">Licencia</div></div><div class="mkt-i-desc">Firmware + molde partible MOOLDE para producción de Placas CUEVA. 0.10% absorción agua, 50 ciclos.</div><div class="mkt-tags"><span class="tag">Hardware</span><span class="tag">Firmware</span><span class="tag">MOOLDE</span></div></div>
+    </div>
+  </main>
+
+  <!-- ═══ RIGHT ASIDE ═══ -->
+  <aside class="as">
+    <div class="as-sec">
+      <div class="as-t">Exchanges & Stock <button class="chip" style="font-size:.55rem;padding:2px 7px">INVEST</button></div>
+      <div class="mchart" id="miniChart"></div>
+      <div class="exch" style="margin-top:.8rem"><div class="exch-hdr"><div><div class="exch-val">4.387.382 Ud</div><div class="exch-lbl">Total placas circulando</div></div><div class="exch-dir up">→ Exchanges</div></div></div>
+      <div class="exch"><div class="exch-hdr"><div><div class="exch-val">2.787.382 Ud</div><div class="exch-lbl">Reubicaciones activas</div></div><div class="exch-dir up">→ Relocation</div></div></div>
+      <div class="exch"><div class="exch-hdr"><div><div class="exch-val">2.787.382 Ud</div><div class="exch-lbl">Intercambios P2P</div></div><div class="exch-dir up">→ Exchange</div></div></div>
+      <div class="exch"><div class="exch-hdr"><div><div class="exch-val">45 Ud</div><div class="exch-lbl">Reciclaje total</div></div><div class="exch-dir dn">↓ Recycled</div></div></div>
+      <div class="exch"><div class="exch-hdr"><div><div class="exch-val">1.787.382 Ud</div><div class="exch-lbl">Stock en neuronas</div></div><div class="exch-dir dn">↓ Stock</div></div></div>
+    </div>
+
+    <div class="as-sec">
+      <div class="as-t">Network Roles</div>
+      <div class="role-grid">
+        <div class="role-pill"><div class="role-dot" style="background:var(--electric)"></div>Designers<div class="role-cnt">70%</div></div>
+        <div class="role-pill"><div class="role-dot" style="background:var(--sky)"></div>Producers<div class="role-cnt">60%</div></div>
+        <div class="role-pill"><div class="role-dot" style="background:var(--amber)"></div>CLT Prod.<div class="role-cnt">80%</div></div>
+        <div class="role-pill"><div class="role-dot" style="background:var(--coral)"></div>Assemblers<div class="role-cnt">50%</div></div>
+        <div class="role-pill"><div class="role-dot" style="background:var(--violet)"></div>Users<div class="role-cnt">70%</div></div>
+        <div class="role-pill"><div class="role-dot" style="background:var(--pink)"></div>Research<div class="role-cnt">50%</div></div>
+      </div>
+    </div>
+
+    <div class="as-sec">
+      <div class="as-t">Quick Links</div>
+      <a class="sb-lnk" href="index.html"><span class="ico">🏠</span>Home</a>
+      <a class="sb-lnk" href="dashboard.html"><span class="ico">📊</span>Dashboard</a>
+      <a class="sb-lnk" href="#"><span class="ico">🎓</span>Certification</a>
+      <a class="sb-lnk" href="#"><span class="ico">📖</span>Manuals</a>
+      <a class="sb-lnk" href="#"><span class="ico">🎮</span>Metaverse</a>
+    </div>
+  </aside>
+</div>
+
+<script>
+// ═══ LOADER ═══
+window.addEventListener('load',()=>{setTimeout(()=>{document.getElementById('loader').classList.add('done');document.body.classList.remove('loading')},2200)});
+
+// ═══ NETWORK CANVAS ═══
+const nc=document.getElementById('networkCanvas'),ctx=nc.getContext('2d');
+function resizeCanvas(){nc.width=nc.offsetWidth;nc.height=280}
+resizeCanvas();window.addEventListener('resize',resizeCanvas);
+const colors=['#00C9A7','#2B7AFF','#FFAA2C','#FF4D35','#7C5CFC','#EC4899'];
+const nodes=Array.from({length:70},()=>({x:Math.random()*nc.width,y:Math.random()*nc.height,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,r:Math.random()*3+1.5,c:colors[Math.floor(Math.random()*6)]}));
+function drawNet(){
+  ctx.clearRect(0,0,nc.width,nc.height);
+  nodes.forEach((n,i)=>{
+    n.x+=n.vx;n.y+=n.vy;
+    if(n.x<0||n.x>nc.width)n.vx*=-1;
+    if(n.y<0||n.y>nc.height)n.vy*=-1;
+    ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);ctx.fillStyle=n.c+'66';ctx.fill();
+    nodes.slice(i+1).forEach(m=>{
+      const d=Math.hypot(n.x-m.x,n.y-m.y);
+      if(d<90){ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.lineTo(m.x,m.y);ctx.strokeStyle=n.c+'12';ctx.lineWidth=1;ctx.stroke()}
+    });
+  });
+  requestAnimationFrame(drawNet)
+}
+drawNet();
+
+// ═══ MINI CHART ═══
+const mc=document.getElementById('miniChart');
+[30,45,60,40,55,70,50,65,80,55,70,85,60,75,90].forEach(v=>{const b=document.createElement('div');b.className='mbar';b.style.height=v+'%';mc.appendChild(b)});
+
+// ═══ MARKET TABS ═══
+document.querySelectorAll('.mkt-tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.mkt-tab').forEach(x=>x.classList.remove('act'));
+    t.classList.add('act');
+    const tab=t.dataset.tab;
+    document.querySelectorAll('.mkt-tc').forEach(c=>{c.classList.remove('act');c.style.display='none'});
+    const tgt=document.querySelector(`.mkt-tc[data-tab="${tab}"]`);
+    if(tgt){tgt.classList.add('act');tgt.style.display='contents'}
+  });
+});
+
+// ═══ NAV SCROLL ═══
+window.addEventListener('scroll',()=>{
+  const n=document.querySelector('nav');
+  if(scrollY>50){n.style.background='rgba(248,247,244,.95)';n.style.boxShadow='0 2px 16px rgba(15,26,46,.06)'}
+  else{n.style.background='rgba(248,247,244,.85)';n.style.boxShadow='none'}
+});
+</script>
+</body>
+</html>
